@@ -1,5 +1,5 @@
 get_espn_teambox <- function(gameID){
-  jackpot <- get_json(gameID)
+  jackpot <- jsonlite::get_json(gameID)
 
   team_box <- jackpot$gamepackageJSON$boxscore$teams
 
@@ -16,14 +16,14 @@ get_espn_teambox <- function(gameID){
   team1_stats <- team_box[1,]$statistics[[1]]$stats
   team2_stats <- team_box[2,]$statistics[[1]]$stats
 
-  team1_batting <- team1_stats[[1]] %>% select(abbreviation,value)
-  team2_batting <- team2_stats[[1]] %>% select(abbreviation,value)
+  team1_batting <- team1_stats[[1]] %>% dplyr::select(abbreviation,value)
+  team2_batting <- team2_stats[[1]] %>% dplyr::select(abbreviation,value)
 
-  team1_pitching <- team1_stats[[2]] %>% select(abbreviation,value)
-  team2_pitching <- team2_stats[[2]] %>% select(abbreviation,value)
+  team1_pitching <- team1_stats[[2]] %>% dplyr::select(abbreviation,value)
+  team2_pitching <- team2_stats[[2]] %>% dplyr::select(abbreviation,value)
 
-  team1_fielding <- team1_stats[[3]] %>% select(abbreviation,value)
-  team2_fielding <- team2_stats[[3]] %>% select(abbreviation,value)
+  team1_fielding <- team1_stats[[3]] %>% dplyr::select(abbreviation,value)
+  team2_fielding <- team2_stats[[3]] %>% dplyr::select(abbreviation,value)
 
   batting_stats <- as.data.frame(matrix(nrow=0,ncol=25))
   names(batting_stats) <- c("team",team1_batting$abbreviation,"logo")

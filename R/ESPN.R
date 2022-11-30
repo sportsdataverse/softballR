@@ -38,7 +38,7 @@ get_json <- function(gameID){
 }
 
 get_espn_teambox <- function(gameID){
-  jackpot <- get_json(gameID)
+  jackpot <- jsonlite::get_json(gameID)
 
   team_box <- jackpot$gamepackageJSON$boxscore$teams
 
@@ -55,14 +55,14 @@ get_espn_teambox <- function(gameID){
   team1_stats <- team_box[1,]$statistics[[1]]$stats
   team2_stats <- team_box[2,]$statistics[[1]]$stats
 
-  team1_batting <- team1_stats[[1]] %>% select(abbreviation,value)
-  team2_batting <- team2_stats[[1]] %>% select(abbreviation,value)
+  team1_batting <- team1_stats[[1]] %>% dplyr::select(abbreviation,value)
+  team2_batting <- team2_stats[[1]] %>% dplyr::select(abbreviation,value)
 
-  team1_pitching <- team1_stats[[2]] %>% select(abbreviation,value)
-  team2_pitching <- team2_stats[[2]] %>% select(abbreviation,value)
+  team1_pitching <- team1_stats[[2]] %>% dplyr::select(abbreviation,value)
+  team2_pitching <- team2_stats[[2]] %>% dplyr::select(abbreviation,value)
 
-  team1_fielding <- team1_stats[[3]] %>% select(abbreviation,value)
-  team2_fielding <- team2_stats[[3]] %>% select(abbreviation,value)
+  team1_fielding <- team1_stats[[3]] %>% dplyr::select(abbreviation,value)
+  team2_fielding <- team2_stats[[3]] %>% dplyr::select(abbreviation,value)
 
   batting_stats <- as.data.frame(matrix(nrow=0,ncol=25))
   names(batting_stats) <- c("team",team1_batting$abbreviation,"logo")
@@ -104,33 +104,33 @@ get_espn_playerbox <- function(gameID){
 
   hitting_stats <- player_box$statistics[[1]]$names[[1]]
 
-  team1_hitters <- player_box$statistics[[1]]$athletes[[1]] %>% select(athlete.displayName,athlete.id,position.name)
-  team1_hitters_stats <- player_box$statistics[[1]]$athletes[[1]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% mutate(athlete.id = team1_hitters$athlete.id)
+  team1_hitters <- player_box$statistics[[1]]$athletes[[1]] %>% dplyr::select(athlete.displayName,athlete.id,position.name)
+  team1_hitters_stats <- player_box$statistics[[1]]$athletes[[1]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% dplyr::mutate(athlete.id = team1_hitters$athlete.id)
   names(team1_hitters_stats) <- c(hitting_stats,"athlete.id")
 
-  team1_hitters <- merge(team1_hitters,team1_hitters_stats) %>% mutate(team = team1)
+  team1_hitters <- merge(team1_hitters,team1_hitters_stats) %>% dplyr::mutate(team = team1)
 
-  team2_hitters <- player_box$statistics[[2]]$athletes[[1]] %>% select(athlete.displayName,athlete.id,position.name)
-  team2_hitters_stats <- player_box$statistics[[2]]$athletes[[1]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% mutate(athlete.id = team2_hitters$athlete.id)
+  team2_hitters <- player_box$statistics[[2]]$athletes[[1]] %>% dplyr::select(athlete.displayName,athlete.id,position.name)
+  team2_hitters_stats <- player_box$statistics[[2]]$athletes[[1]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% dplyr::mutate(athlete.id = team2_hitters$athlete.id)
   names(team2_hitters_stats) <- c(hitting_stats,"athlete.id")
 
-  team2_hitters <- merge(team2_hitters,team2_hitters_stats) %>% mutate(team = team2)
+  team2_hitters <- merge(team2_hitters,team2_hitters_stats) %>% dplyr::mutate(team = team2)
 
   hitting_stats <- rbind(team1_hitters,team2_hitters)
 
   pitching_stats <- player_box$statistics[[1]]$names[[2]]
 
-  team1_pitchers <- player_box$statistics[[1]]$athletes[[2]] %>% select(athlete.displayName,athlete.id,position.name)
-  team1_pitchers_stats <- player_box$statistics[[1]]$athletes[[2]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% mutate(athlete.id = team1_pitchers$athlete.id)
+  team1_pitchers <- player_box$statistics[[1]]$athletes[[2]] %>% dplyr::select(athlete.displayName,athlete.id,position.name)
+  team1_pitchers_stats <- player_box$statistics[[1]]$athletes[[2]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% dplyr::mutate(athlete.id = team1_pitchers$athlete.id)
   names(team1_pitchers_stats) <- c(pitching_stats,"athlete.id")
 
-  team1_pitchers <- merge(team1_pitchers,team1_pitchers_stats) %>% mutate(team = team1)
+  team1_pitchers <- merge(team1_pitchers,team1_pitchers_stats) %>% dplyr::mutate(team = team1)
 
-  team2_pitchers <- player_box$statistics[[2]]$athletes[[2]] %>% select(athlete.displayName,athlete.id,position.name)
-  team2_pitchers_stats <- player_box$statistics[[2]]$athletes[[2]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% mutate(athlete.id = team2_pitchers$athlete.id)
+  team2_pitchers <- player_box$statistics[[2]]$athletes[[2]] %>% dplyr::select(athlete.displayName,athlete.id,position.name)
+  team2_pitchers_stats <- player_box$statistics[[2]]$athletes[[2]]$stats %>% as.data.frame() %>% t() %>% as.data.frame(row.names = NULL) %>% dplyr::mutate(athlete.id = team2_pitchers$athlete.id)
   names(team2_pitchers_stats) <- c(pitching_stats,"athlete.id")
 
-  team2_pitchers <- merge(team2_pitchers,team2_pitchers_stats) %>% mutate(team = team2)
+  team2_pitchers <- merge(team2_pitchers,team2_pitchers_stats) %>% dplyr::mutate(team = team2)
 
   pitching_stats <- rbind(team1_pitchers,team2_pitchers)
 
@@ -145,7 +145,7 @@ get_espn_pbp <- function(gameID){
 
   #Finds play by play data
   pbp <- jackpot$gamepackageJSON$plays %>%
-    mutate(game_id = gameID)
+    dplyr::dplyr::mutate(game_id = gameID)
 
   if(length(pbp) == 0){
     return("No Play by Play Data")
@@ -158,16 +158,16 @@ get_espn_pbp <- function(gameID){
       pivot_wider(names_from = type,values_from = athlete.id)
 
     temp <- pbp %>%
-      filter(participants != "NULL") %>%
-      select(-participants) %>%
+      dplyr::filter(participants != "NULL") %>%
+      dplyr::select(-participants) %>%
       janitor::clean_names() %>%
-      mutate(rownum = as.character(row_number()))
+      dplyr::mutate(rownum = as.character(row_number()))
 
     temp$on_third_athlete_id = ifelse("on_third_athlete_id" %in% colnames(temp),temp$on_third_athlete_id,NA)
 
     final <- left_join(temp,participants2,by = "rownum") %>%
-      select(-c(rownum,on_first_athlete_id,on_second_athlete_id,on_third_athlete_id)) %>%
-      filter(type_text != "start batter/pitcher" & type_text != "end batter/pitcher")
+      dplyr::select(-c(rownum,on_first_athlete_id,on_second_athlete_id,on_third_athlete_id)) %>%
+      dplyr::filter(type_text != "start batter/pitcher" & type_text != "end batter/pitcher")
 
     return(final)
   }
@@ -219,9 +219,9 @@ get_espn_pbp <- function(gameID){
   for (i in 1:nrow(playbyplay)) {
     if(!is.na(playbyplay$pitcher[i])){
       pitcherid <- playbyplay$pitcher[i]
-      pitchername <- roster %>% filter(ID == pitcherid) %>% select(Name) %>% as.character()
+      pitchername <- roster %>% dplyr::filter(ID == pitcherid) %>% dplyr::select(Name) %>% as.character()
 
-      pitchingteamname <- roster %>% filter(ID == pitcherid) %>% select(Team) %>% as.character()
+      pitchingteamname <- roster %>% dplyr::filter(ID == pitcherid) %>% dplyr::select(Team) %>% as.character()
 
       playbyplay$pitcher_name[i] <- pitchername
       playbyplay$pitching_team[i] <- pitchingteamname
@@ -229,9 +229,9 @@ get_espn_pbp <- function(gameID){
 
     if(!is.na(playbyplay$batter[i])){
       batterid <- playbyplay$batter[i]
-      battername <- roster %>% filter(ID == batterid) %>% select(Name) %>% as.character()
+      battername <- roster %>% dplyr::filter(ID == batterid) %>% dplyr::select(Name) %>% as.character()
 
-      hittingteamname <- roster %>% filter(ID == batterid) %>% select(Team) %>% as.character()
+      hittingteamname <- roster %>% dplyr::filter(ID == batterid) %>% dplyr::select(Team) %>% as.character()
 
       playbyplay$batter_name[i] <- battername
       playbyplay$hitting_team[i] <- hittingteamname
@@ -239,21 +239,21 @@ get_espn_pbp <- function(gameID){
 
     if(!is.na(playbyplay$onFirst[i])){
       onFirstid <- playbyplay$onFirst[i]
-      onFirstname <- roster %>% filter(ID == onFirstid) %>% select(Name) %>% as.character()
+      onFirstname <- roster %>% dplyr::filter(ID == onFirstid) %>% dplyr::select(Name) %>% as.character()
 
       playbyplay$onFirst_name[i] <- onFirstname
     }
 
     if(!is.na(playbyplay$onSecond[i])){
       onSecondid <- playbyplay$onSecond[i]
-      onSecondname <- roster %>% filter(ID == onSecondid) %>% select(Name) %>% as.character()
+      onSecondname <- roster %>% dplyr::filter(ID == onSecondid) %>% dplyr::select(Name) %>% as.character()
 
       playbyplay$onSecond_name[i] <- onSecondname
     }
 
     if(!is.na(playbyplay$onThird[i])){
       onThirdid <- playbyplay$onThird[i]
-      onThirdname <- roster %>% filter(ID == onThirdid) %>% select(Name) %>% as.character()
+      onThirdname <- roster %>% dplyr::filter(ID == onThirdid) %>% dplyr::select(Name) %>% as.character()
 
       playbyplay$onThird_name[i] <- onThirdname
     }
@@ -262,9 +262,9 @@ get_espn_pbp <- function(gameID){
   playbyplay$onThird = ifelse("onThird" %in% colnames(playbyplay),playbyplay$onThird,NA)
 
   new_pbp <- playbyplay %>%
-    select(-c(pitcher,batter,onFirst,onSecond,onThird)) %>%
-    filter(type_text != "Play Result") %>%
-    mutate(sequence_number = as.numeric(sequence_number) - 1,
+    dplyr::select(-c(pitcher,batter,onFirst,onSecond,onThird)) %>%
+    dplyr::filter(type_text != "Play Result") %>%
+    dplyr::mutate(sequence_number = as.numeric(sequence_number) - 1,
            home_team = first(pitching_team),
            away_team = first(hitting_team),
            end_of_ab = ifelse(summary_type == "P",FALSE,TRUE),
@@ -272,7 +272,7 @@ get_espn_pbp <- function(gameID){
            score_value = ifelse(end_of_ab == TRUE,score_value,0),
            hit_coordinate_x = ifelse(type_text == "foul ball",NA,hit_coordinate_x),
            hit_coordinate_y = ifelse(type_text == "foul ball",NA,hit_coordinate_y)) %>%
-    select(sequence_number,home_score,away_score,period_number,
+    dplyr::select(sequence_number,home_score,away_score,period_number,
            period_type,outs,pitch_count_balls,pitch_count_strikes,result_count_balls,result_count_strikes,
            pitcher_name,batter_name,bats_abbreviation,bat_order,onFirst_name,onSecond_name,onThird_name,
            text,type_id,type_text,pitch_coordinate_x,pitch_coordinate_y,hit_coordinate_x,hit_coordinate_y,
