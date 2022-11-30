@@ -1,5 +1,18 @@
+#' Get ESPN Team Box Score
+#'
+#' @author Tyson King
+#' @param gameID
+#'
+#' @return A named list of dataframes, Batting, Pitching, and Fielding
+#' @importFrom dplyr select
+#' @export
+#'
+#' @examples
+#' ID = 401444869
+#' try(get_espn_teambox(ID))
+
 get_espn_teambox <- function(gameID){
-  jackpot <- jsonlite::get_json(gameID)
+  jackpot <- get_json(gameID)
 
   team_box <- jackpot$gamepackageJSON$boxscore$teams
 

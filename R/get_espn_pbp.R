@@ -1,3 +1,18 @@
+#' Get ESPN Play-by-Play data
+#'
+#' @author Tyson King
+#' @param gameID
+#'
+#' @return A data frame of every pitch of the given game
+#' @importFrom dplyr bind_rows mutate filter select
+#' @importFrom  tidyr pivot_wider
+#' @importFrom  janitor clean_names
+#' @export
+#'
+#' @examples
+#' ID = 401444869
+#' try(get_espn_pbp(ID))
+
 get_espn_pbp <- function(gameID){
 
   jackpot <- get_json(gameID)
@@ -11,10 +26,10 @@ get_espn_pbp <- function(gameID){
   }
   fix_pbp <- function(gameID){
     participants <- pbp$participants %>%
-      bind_rows(.id = "rownum")
+      dplyr::bind_rows(.id = "rownum")
 
     participants2 <- participants %>%
-      pivot_wider(names_from = type,values_from = athlete.id)
+      tidyr::pivot_wider(names_from = type,values_from = athlete.id)
 
     temp <- pbp %>%
       dplyr::filter(participants != "NULL") %>%
