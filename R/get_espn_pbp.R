@@ -4,7 +4,7 @@
 #' @param gameID
 #'
 #' @return A data frame of every pitch of the given game
-#' @importFrom dplyr bind_rows mutate filter select row_number left_join
+#' @importFrom dplyr bind_rows mutate filter select row_number left_join first
 #' @importFrom  tidyr pivot_wider
 #' @importFrom  janitor clean_names
 #' @importFrom magrittr %>%
@@ -140,8 +140,8 @@ get_espn_pbp <- function(gameID){
     dplyr::select(-c(pitcher,batter,onFirst,onSecond,onThird)) %>%
     dplyr::filter(type_text != "Play Result") %>%
     dplyr::mutate(sequence_number = as.numeric(sequence_number) - 1,
-                  home_team = first(pitching_team),
-                  away_team = first(hitting_team),
+                  home_team = dplyr::first(pitching_team),
+                  away_team = dplyr::first(hitting_team),
                   end_of_ab = ifelse(summary_type == "P",FALSE,TRUE),
                   scoring_play = ifelse(end_of_ab == TRUE,scoring_play,FALSE),
                   score_value = ifelse(end_of_ab == TRUE,score_value,0),
