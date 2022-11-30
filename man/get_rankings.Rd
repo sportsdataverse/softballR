@@ -13,10 +13,8 @@ data frame of rankings, format changes based on source
 Source options: RPI, D1Softball, USA Today, or Massey
 }
 \examples{
-sources <- c("RPI","D1Softball","USA Today","Massey")
-for(i in sources){
-  try(get_rankings(i))
-}
+try(get_rankings("RPI"))
+
 }
 \author{
 Tyson King

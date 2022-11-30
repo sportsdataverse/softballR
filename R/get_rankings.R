@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-#' try(get_rankings("RPI))
+#' try(get_rankings("RPI"))
 #'
 get_rankings <- function(source){
 
@@ -55,7 +55,7 @@ get_rankings <- function(source){
   if(source == "USA Today"){
     rankings <- "https://nfca.org/component/com_nfca/Itemid,230/list,1/pdiv,div1/top25,1/year,2022/" %>% rvest::read_html() %>% rvest::html_table()
     rankings <- rankings[[1]] %>%
-      tidyr::separate(Team,c("Team","First Place Votes"),"\\(") %>%
+      tidyr::separate(Team,c("Team","First Place Votes"),"\\(",fill = "right") %>%
       dplyr::mutate(`First Place Votes` = stringr::str_remove(`First Place Votes`,"\\)"),
                     `First Place Votes` = ifelse(is.na(`First Place Votes`),0,`First Place Votes`))
   }
@@ -84,7 +84,7 @@ get_rankings <- function(source){
       janitor::clean_names() %>%
       dplyr::select(c(1,3,4,6,7,12)) %>%
       `names<-`(colnames) %>%
-      tidyr::separate(record,c("wins","losses","ties"),"-") %>%
+      tidyr::separate(record,c("wins","losses","ties"),"-",fill = "right") %>%
       dplyr::mutate_at(5:8,as.numeric) %>%
       dplyr::mutate(ties = ifelse(is.na(ties),0,ties),
              win_perc = wins / (wins + losses + ties),
