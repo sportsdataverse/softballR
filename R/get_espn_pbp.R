@@ -16,30 +16,39 @@
 
 get_espn_pbp <- function(gameID){
 
+  #jackpot: full json file for game
   jackpot <- get_json(gameID)
 
   #Finds play by play data
   pbp <- jackpot$gamepackageJSON$plays %>%
     dplyr::mutate(game_id = gameID)
 
+  #Some games only have scoreboard data and not play-by-play
   if(length(pbp) == 0){
     return("No Play by Play Data")
   }
-  fix_pbp <- function(gameID){
+
+  #Internal function for adjusting the pbp data frame
+  fix_pbp <- function(pbp){
+    #the participants row is an embedded list, so this is fixing that
     participants <- pbp$participants %>%
       dplyr::bind_rows(.id = "rownum")
 
+    #expands skinny data frame so it has a separate column for each participant
     participants2 <- participants %>%
       tidyr::pivot_wider(names_from = type,values_from = athlete.id)
 
+    #cleaning up column names, etc.
     temp <- pbp %>%
       dplyr::filter(participants != "NULL") %>%
       dplyr::select(-participants) %>%
       janitor::clean_names() %>%
       dplyr::mutate(rownum = as.character(dplyr::row_number()))
 
+    #some games never had a player on third, so that column was excluded... this fixes that i think
     temp$on_third_athlete_id = ifelse("on_third_athlete_id" %in% colnames(temp),temp$on_third_athlete_id,NA)
 
+    #rejoins the two data frames and filters substitution rows
     final <- dplyr::left_join(temp,participants2,by = "rownum") %>%
       dplyr::select(-c(rownum,on_first_athlete_id,on_second_athlete_id,on_third_athlete_id)) %>%
       dplyr::filter(type_text != "start batter/pitcher" & type_text != "end batter/pitcher")
@@ -77,66 +86,66 @@ get_espn_pbp <- function(gameID){
     return(roster)
   }
 
-  #Example game: Texas vs. Oklahoma, Game 1 WCWS 2022
-  playbyplay <- fix_pbp(gameID)
-  playbyplay$pitcher_name <- NA
-  playbyplay$batter_name <- NA
-  playbyplay$onFirst_name <- NA
-  playbyplay$onSecond_name <- NA
-  playbyplay$onThird_name <- NA
-  playbyplay$hitting_team <- NA
-  playbyplay$pitching_team <- NA
+  pbp_upd <- fix_pbp(pbp) %>%
+    dplyr::mutate(pitcher_name = NA,
+                  batter_name = NA,
+                  onFirst_name = NA,
+                  onSecond_name = NA,
+                  onThird_name = NA,
+                  hitting_team = NA,
+                  pitching_team = NA)
 
 
   roster <- get_roster(gameID)
 
-
-  for (i in 1:nrow(playbyplay)) {
-    if(!is.na(playbyplay$pitcher[i])){
-      pitcherid <- playbyplay$pitcher[i]
+  tic()
+  for (i in 1:nrow(pbp_upd)) {
+    if(!is.na(pbp_upd$pitcher[i])){
+      pitcherid <- pbp_upd$pitcher[i]
       pitchername <- roster %>% dplyr::filter(ID == pitcherid) %>% dplyr::select(Name) %>% as.character()
 
       pitchingteamname <- roster %>% dplyr::filter(ID == pitcherid) %>% dplyr::select(Team) %>% as.character()
 
-      playbyplay$pitcher_name[i] <- pitchername
-      playbyplay$pitching_team[i] <- pitchingteamname
+      pbp_upd$pitcher_name[i] <- pitchername
+      pbp_upd$pitching_team[i] <- pitchingteamname
     }
 
-    if(!is.na(playbyplay$batter[i])){
-      batterid <- playbyplay$batter[i]
+    if(!is.na(pbp_upd$batter[i])){
+      batterid <- pbp_upd$batter[i]
       battername <- roster %>% dplyr::filter(ID == batterid) %>% dplyr::select(Name) %>% as.character()
 
       hittingteamname <- roster %>% dplyr::filter(ID == batterid) %>% dplyr::select(Team) %>% as.character()
 
-      playbyplay$batter_name[i] <- battername
-      playbyplay$hitting_team[i] <- hittingteamname
+      pbp_upd$batter_name[i] <- battername
+      pbp_upd$hitting_team[i] <- hittingteamname
     }
 
-    if(!is.na(playbyplay$onFirst[i])){
-      onFirstid <- playbyplay$onFirst[i]
+    if(!is.na(pbp_upd$onFirst[i])){
+      onFirstid <- pbp_upd$onFirst[i]
       onFirstname <- roster %>% dplyr::filter(ID == onFirstid) %>% dplyr::select(Name) %>% as.character()
 
-      playbyplay$onFirst_name[i] <- onFirstname
+      pbp_upd$onFirst_name[i] <- onFirstname
     }
 
-    if(!is.na(playbyplay$onSecond[i])){
-      onSecondid <- playbyplay$onSecond[i]
+    if(!is.na(pbp_upd$onSecond[i])){
+      onSecondid <- pbp_upd$onSecond[i]
       onSecondname <- roster %>% dplyr::filter(ID == onSecondid) %>% dplyr::select(Name) %>% as.character()
 
-      playbyplay$onSecond_name[i] <- onSecondname
+      pbp_upd$onSecond_name[i] <- onSecondname
     }
 
-    if(!is.na(playbyplay$onThird[i])){
-      onThirdid <- playbyplay$onThird[i]
+    if(!is.na(pbp_upd$onThird[i])){
+      onThirdid <- pbp_upd$onThird[i]
       onThirdname <- roster %>% dplyr::filter(ID == onThirdid) %>% dplyr::select(Name) %>% as.character()
 
-      playbyplay$onThird_name[i] <- onThirdname
+      pbp_upd$onThird_name[i] <- onThirdname
     }
   }
+  toc()
 
-  playbyplay$onThird = ifelse("onThird" %in% colnames(playbyplay),playbyplay$onThird,NA)
+  pbp_upd$onThird = ifelse("onThird" %in% colnames(pbp_upd),pbp_upd$onThird,NA)
 
-  new_pbp <- playbyplay %>%
+  new_pbp <- pbp_upd %>%
     dplyr::select(-c(pitcher,batter,onFirst,onSecond,onThird)) %>%
     dplyr::filter(type_text != "Play Result") %>%
     dplyr::mutate(sequence_number = as.numeric(sequence_number) - 1,
