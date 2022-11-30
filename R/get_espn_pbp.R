@@ -40,7 +40,7 @@ get_espn_pbp <- function(gameID){
 
     temp$on_third_athlete_id = ifelse("on_third_athlete_id" %in% colnames(temp),temp$on_third_athlete_id,NA)
 
-    final <- left_join(temp,participants2,by = "rownum") %>%
+    final <- dplyr::left_join(temp,participants2,by = "rownum") %>%
       dplyr::select(-c(rownum,on_first_athlete_id,on_second_athlete_id,on_third_athlete_id)) %>%
       dplyr::filter(type_text != "start batter/pitcher" & type_text != "end batter/pitcher")
 
