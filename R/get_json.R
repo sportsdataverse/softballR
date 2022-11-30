@@ -6,6 +6,7 @@
 #' @return The entire json file for a given gameID on ESPN's website
 #' @importFrom httr RETRY content
 #' @importFrom jsonlite fromJSON
+#' @importFrom magrittr %>%
 #' @export
 #'
 #' @examples

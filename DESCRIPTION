@@ -20,4 +20,5 @@ Imports:
   httr,
   dplyr,
   tidyr,
-  janitor
+  janitor,
+  magrittr

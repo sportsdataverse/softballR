@@ -5,6 +5,7 @@
 #'
 #' @return A named list of dataframes, Batting, Pitching, and Fielding
 #' @importFrom dplyr select
+#' @importFrom magrittr %>%
 #' @export
 #'
 #' @examples

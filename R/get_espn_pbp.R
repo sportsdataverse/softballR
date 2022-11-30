@@ -7,6 +7,7 @@
 #' @importFrom dplyr bind_rows mutate filter select
 #' @importFrom  tidyr pivot_wider
 #' @importFrom  janitor clean_names
+#' @importFrom magrittr %>%
 #' @export
 #'
 #' @examples

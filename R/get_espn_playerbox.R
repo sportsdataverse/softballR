@@ -5,6 +5,7 @@
 #'
 #' @return A named list of dataframes, hitting and pitching
 #' @importFrom dplyr mutate select
+#' @importFrom magrittr %>%
 #' @export
 #'
 #' @examples
