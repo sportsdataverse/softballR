@@ -15,10 +15,8 @@
 #' @export
 #'
 #' @examples
-#' sources <- c("RPI","D1Softball","USA Today","Massey")
-#' for(i in sources){
-#'   try(get_rankings(i))
-#' }
+#' try(get_rankings("RPI))
+#'
 get_rankings <- function(source){
 
   `%!in%` = Negate(`%in%`)

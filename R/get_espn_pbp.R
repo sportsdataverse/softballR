@@ -98,7 +98,6 @@ get_espn_pbp <- function(gameID){
 
   roster <- get_roster(gameID)
 
-  tic()
   for (i in 1:nrow(pbp_upd)) {
     if(!is.na(pbp_upd$pitcher[i])){
       pitcherid <- pbp_upd$pitcher[i]
@@ -141,7 +140,6 @@ get_espn_pbp <- function(gameID){
       pbp_upd$onThird_name[i] <- onThirdname
     }
   }
-  toc()
 
   pbp_upd$onThird = ifelse("onThird" %in% colnames(pbp_upd),pbp_upd$onThird,NA)
 
