@@ -4,7 +4,7 @@
 #' @param gameID
 #'
 #' @return A data frame of every pitch of the given game
-#' @importFrom dplyr bind_rows mutate filter select
+#' @importFrom dplyr bind_rows mutate filter select row_number
 #' @importFrom  tidyr pivot_wider
 #' @importFrom  janitor clean_names
 #' @importFrom magrittr %>%
@@ -36,7 +36,7 @@ get_espn_pbp <- function(gameID){
       dplyr::filter(participants != "NULL") %>%
       dplyr::select(-participants) %>%
       janitor::clean_names() %>%
-      dplyr::mutate(rownum = as.character(row_number()))
+      dplyr::mutate(rownum = as.character(dplyr::row_number()))
 
     temp$on_third_athlete_id = ifelse("on_third_athlete_id" %in% colnames(temp),temp$on_third_athlete_id,NA)
 
