@@ -4,7 +4,7 @@
 #' @param gameID
 #'
 #' @return A data frame of every pitch of the given game
-#' @importFrom dplyr bind_rows mutate filter select row_number
+#' @importFrom dplyr bind_rows mutate filter select row_number left_join
 #' @importFrom  tidyr pivot_wider
 #' @importFrom  janitor clean_names
 #' @importFrom magrittr %>%
