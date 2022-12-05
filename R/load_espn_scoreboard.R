@@ -142,7 +142,8 @@ load_espn_scoreboard <- function(date){
                             description = description, game_date = game_date, game_time = game_time)
     }
 
-    scoreboard <- rbind(scoreboard,temp_df) %>% tidyr::drop_na(home_team_id)
+    scoreboard <- rbind(scoreboard,temp_df) %>% tidyr::drop_na(home_team_id) %>% mutate(home_team_logo = str_remove("uid",home_team_logo),
+                                                                                        away_team_logo = str_remove("uid",away_team_logo))
 
   }
 
