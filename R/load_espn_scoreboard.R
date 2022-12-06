@@ -4,7 +4,7 @@
 #' @param date YYYY-MM-DD
 #'
 #' @return data frame with 21 columns of relevant game information
-#' @importFrom stringr str_remove_all str_split str_replace
+#' @importFrom stringr str_remove_all str_split str_replace str_remove
 #' @importFrom tidyr drop_na
 #' @export
 #'
@@ -144,8 +144,8 @@ load_espn_scoreboard <- function(date){
 
     scoreboard <- rbind(scoreboard,temp_df) %>% tidyr::drop_na(home_team_id)
 
-    scoreboard$home_team_logo <- str_remove(scoreboard$home_team_logo,"uid")
-    scoreboard$away_team_logo <- str_remove(scoreboard$away_team_logo,"uid")
+    scoreboard$home_team_logo <- stringr::str_remove(scoreboard$home_team_logo,"uid")
+    scoreboard$away_team_logo <- stringr::str_remove(scoreboard$away_team_logo,"uid")
 
   }
 
