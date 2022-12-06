@@ -12,6 +12,13 @@ devtools::install_github("tmking2002/softballR")
 
 ## Important Functions 
 
+### Get Play-by-Play for a Given Game ID
+
+``` r
+id <- 401444869 # Game 2 of 2022 WCWS
+pbp <- get_espn_pbp(id)
+```
+
 ### Get Basic Stats For All Games in a Given Season
 
 ``` r
@@ -23,13 +30,6 @@ espn_season_scoreboard <- load_espn_season_scoreboard(2022)
 
 ``` r
 rankings <- get_rankings("RPI")
-```
-
-### Get Play-by-Play for a Given Game ID
-
-``` r
-id <- 401444869 # Game 2 of 2022 WCWS
-pbp <- get_espn_pbp(id)
 ```
 
 ## **Author**
