@@ -3,7 +3,7 @@ Package that scrapes and cleans college softball data from NCAA, ESPN, and a few
 
 ## Installation
 
-You can install the current version (0.2.0) of the package like this:
+You can install the current version (0.3.2) of the package like this:
       
 ``` r
 # install.packages("devtools")
