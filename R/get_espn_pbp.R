@@ -19,6 +19,10 @@ get_espn_pbp <- function(gameID){
   #jackpot: full json file for game
   jackpot <- get_json(gameID)
 
+  if(length(jackpot$gamepackageJSON$plays) == 0){
+    return("No Play by Play Data")
+  }
+
   #Finds play by play data
   pbp <- jackpot$gamepackageJSON$plays %>%
     dplyr::mutate(game_id = gameID)
