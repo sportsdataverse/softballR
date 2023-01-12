@@ -3,7 +3,7 @@ Package that scrapes and cleans college softball data from NCAA, ESPN, and a few
 
 ## Installation
 
-You can install the current version (0.3.2) of the package like this:
+You can install the current version (0.3.3) of the package like this:
       
 ``` r
 # install.packages("devtools")
@@ -23,7 +23,7 @@ pbp <- get_espn_pbp(id)
 
 ``` r
 # Warning: Takes several minutes to load
-espn_season_scoreboard <- load_espn_season_scoreboard(2022)
+espn_season_scoreboard <- get_espn_season_scoreboard(2022)
 ```
 
 ### Get the Current RPI Rankings
