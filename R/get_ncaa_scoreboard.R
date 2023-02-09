@@ -42,6 +42,8 @@ get_ncaa_scoreboard <- function(date){
     team2_score <- stringr::str_remove_all(raw_html[locations[2,i] + 1],c("                <span class=\"gamePod-game-team-score\">|</span>"))
 
     game_id <- stringr::str_remove_all(raw_html[locations[1,i] - 20],"        href=\"/game/|\">")
+    if(str_detect(game_id,"SEED")) game_id <- stringr::str_remove_all(raw_html[locations[1,i] - 21],"        href=\"/game/|\">")
+
 
     temp <- data.frame(home_name = team2,
                        home_score = team2_score,
