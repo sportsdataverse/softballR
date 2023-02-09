@@ -1,4 +1,4 @@
-# softballR
+# softballR <a href='https://github.com/tmking2002/softballR/'><img src="https://raw.githubusercontent.com/tmking2002/softballR/main/logo.png" align="right"  width="20%" min-width="100px"/></a>
 Package that scrapes and cleans college softball data from NCAA, ESPN, and a few others.
 
 ## Installation
