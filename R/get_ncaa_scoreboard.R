@@ -17,7 +17,7 @@ get_ncaa_scoreboard <- function(date){
   date = as.Date(date)
 
   day = lubridate::mday(date)
-  day = ifelse(day <= 9,paste0("0",day))
+  day = ifelse(day <= 9,paste0("0",day),day)
 
   month = lubridate::month(date)
   month = ifelse(month <= 9,paste0("0",month))
