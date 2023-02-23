@@ -5,6 +5,7 @@
 #' @return dataframe of all games on ESPN website from selected seasons
 #' @importFrom dplyr mutate filter
 #' @importFrom lubridate year
+#' @export
 #'
 #' @examples try(load_espn_scoreboard(2020:2023))
 load_espn_scoreboard <- function(seasons){
