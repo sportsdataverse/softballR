@@ -4,7 +4,10 @@
 \alias{get_massey_scoreboard}
 \title{Get Massey Scoreboard}
 \usage{
-get_massey_scoreboard()
+get_massey_scoreboard(league)
+}
+\arguments{
+\item{league}{D1, D2, or D3}
 }
 \value{
 The final score of all games through the current date
