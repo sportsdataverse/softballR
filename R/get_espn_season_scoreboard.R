@@ -40,6 +40,9 @@ get_espn_season_scoreboard <- function(season){
     scoreboard <- rbind(scoreboard,temp)
   }
 
+  scoreboard <- scoreboard %>% 
+    filter(description == "Final")
+  
   return(scoreboard)
 }
 
