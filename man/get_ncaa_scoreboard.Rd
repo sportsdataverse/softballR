@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_ncaa_scoreboard.R
 \name{get_ncaa_scoreboard}
 \alias{get_ncaa_scoreboard}
-\title{Get NCAA Softball scoreboard for a given day}
+\title{Get all NCAA softball scores for a given day}
 \usage{
 get_ncaa_scoreboard(date)
 }
@@ -10,10 +10,10 @@ get_ncaa_scoreboard(date)
 \item{date}{"YYYY-MM-DD"}
 }
 \value{
-data frame of team names, their scores, and the game ids
+data frame of date, team names and their scores
 }
 \description{
-Get NCAA Softball scoreboard for a given day
+for now only supports 2022 and 2023 seasons, will update further later
 }
 \examples{
 date = "2022-03-05"
