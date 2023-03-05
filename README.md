@@ -3,7 +3,7 @@ Package that scrapes and cleans college softball data from NCAA, ESPN, and a few
 
 ## Installation
 
-You can install the current version (0.4.0) of the package like this:
+You can install the current version (0.4.1) of the package like this:
       
 ``` r
 # install.packages("devtools")
@@ -19,11 +19,16 @@ id <- 401444869 # Game 2 of 2022 WCWS
 pbp <- get_espn_pbp(id)
 ```
 
-### Get Basic Stats For All Games in a Given Season
+### Get basic stats (Runs, Hits, Errors, Etc.) for all games in a given season
 
 ``` r
-# Warning: Takes several minutes to load
-espn_season_scoreboard <- get_espn_season_scoreboard(2022)
+espn_season_scoreboard <- load_espn_season_scoreboard(2022)
+```
+
+### Get scores for all games in a given season
+
+``` r
+ncaa_season_scoreboard <- load_ncaa_season_scoreboard(2023)
 ```
 
 ### Get the Current RPI Rankings
