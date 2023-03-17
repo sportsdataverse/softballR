@@ -40,5 +40,8 @@ get_ncaa_season_scoreboard <- function(season){
     scoreboard <- rbind(scoreboard,temp)
   }
 
+  scoreboard <- scoreboard %>%
+    filter(!str_detect(team1,"@") & !str_detect(team2,"@"))
+
   return(scoreboard)
 }

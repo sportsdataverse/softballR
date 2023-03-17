@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' try(get_massey_scoreboard("D1))
+#' try(get_massey_scoreboard("D1'))
 get_massey_scoreboard <- function(league){
 
   league_id <- dplyr::case_when(league == "D1" ~ "11590",
