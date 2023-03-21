@@ -3,7 +3,7 @@ Package that scrapes and cleans college softball data from NCAA, ESPN, and a few
 
 ## Installation
 
-You can install the current version (0.4.1) of the package like this:
+You can install the current version (0.5.0) of the package like this:
       
 ``` r
 # install.packages("devtools")
@@ -12,7 +12,7 @@ devtools::install_github("tmking2002/softballR")
 
 ## Important Functions 
 
-### Get Play-by-Play for a Given Game ID
+### Get ESPN Play-by-Play for a Given Game ID
 
 ``` r
 id <- 401444869 # Game 2 of 2022 WCWS
@@ -29,6 +29,17 @@ espn_season_scoreboard <- load_espn_season_scoreboard(2022)
 
 ``` r
 ncaa_season_scoreboard <- load_ncaa_season_scoreboard(2023)
+```
+
+### Get all play by play data for a certain team's season
+
+```r
+# get team id for 2023 oklahoma team
+oklahoma_id <- get_ncaa_teams(2023) %>% 
+  dplyr::filter(team_name == "Oklahoma") %>% 
+  dplyr::pull(team_id)
+  
+pbp <- get_ncaa_pbp(oklahoma_id)
 ```
 
 ### Get the Current RPI Rankings
