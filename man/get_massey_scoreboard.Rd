@@ -15,6 +15,9 @@ The final score of all games through the current date
 \description{
 Get Massey Scoreboard
 }
+\examples{
+try(get_massey_scoreboard("D1"))
+}
 \author{
 Tyson King
 }

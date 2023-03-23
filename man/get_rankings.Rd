@@ -6,11 +6,14 @@
 \usage{
 get_rankings(source)
 }
+\arguments{
+\item{source}{Source options: RPI, D1Softball, USA Today, or Massey}
+}
 \value{
 data frame of rankings, format changes based on source
 }
 \description{
-Source options: RPI, D1Softball, USA Today, or Massey
+Get NCAA Softball Team Rankings
 }
 \examples{
 try(get_rankings("RPI"))

@@ -1,8 +1,7 @@
 #' Get NCAA Softball Team Rankings
 #'
 #' @author Tyson King
-#' @param source
-#' @description Source options: RPI, D1Softball, USA Today, or Massey
+#' @param source Source options: RPI, D1Softball, USA Today, or Massey
 #'
 #' @return data frame of rankings, format changes based on source
 #' @importFrom stringr str_length str_remove str_split

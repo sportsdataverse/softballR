@@ -16,8 +16,10 @@
 #' try(get_ncaa_pbp(549186))
 get_ncaa_pbp <- function(team_id){
 
-  team_site <- glue::glue("https://stats.ncaa.org/teams/{team_id}") %>%
-    readLines()
+  team_site <- try(glue::glue("https://stats.ncaa.org/teams/{team_id}") %>%
+    readLines())
+
+  if("try-error" == class(team_site)) stop("Invalid team id")
 
   ids <- rbind(get_ncaa_teams(2021),
                get_ncaa_teams(2022),
@@ -28,6 +30,8 @@ get_ncaa_pbp <- function(team_id){
   team_name <- ids %>%
     dplyr::filter(team_id == team_id_curr) %>%
     dplyr::pull(team_name)
+
+
 
   games <- grep("http://web2.ncaa.org/ncaa_style/img/All_Logos", team_site)[2:56] + 3
 
