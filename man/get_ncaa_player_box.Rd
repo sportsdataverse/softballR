@@ -2,20 +2,20 @@
 % Please edit documentation in R/get_ncaa_player_box.R
 \name{get_ncaa_player_box}
 \alias{get_ncaa_player_box}
-\title{Get all box scores for a team's entire season (pitching, hitting, and fielding)}
+\title{Get all box scores for a given game id}
 \usage{
-get_ncaa_player_box(team_id)
+get_ncaa_player_box(game_id)
 }
 \arguments{
-\item{team_id}{get team ids from get_ncaa_teams function}
+\item{team_id}{get game ids from get_ncaa_scoreboard function}
 }
 \value{
 named list with three elements, "Hitting", "Pitching" and "Fielding".
-Each contains a dataframe of every box score for that team's season
+Each contains a dataframe of the box scores for that game
 }
 \description{
-only has data for 2021, 2022, and 2023 and only has D1 for now
+Get all box scores for a given game id
 }
 \examples{
-try(get_ncaa_player_box(549186))
+try(get_ncaa_player_box(2377042))
 }

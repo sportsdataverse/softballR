@@ -42,56 +42,67 @@ get_ncaa_scoreboard <- function(date){
                                   year == 2019 ~ 16820)
 
 
-  test <- paste0("https://stats.ncaa.org/season_divisions/",division_id,"/livestream_scoreboards?utf8=%E2%9C%93&season_division_id=&game_date=",month,"%2F",day,"%2F",year) %>%
-    rvest::read_html() %>%
-    rvest::html_text() %>%
-    strsplit("Box Score") %>%
-    magrittr::extract2(1) %>%
-    strsplit("\\n")
+  raw <- paste0("https://stats.ncaa.org/season_divisions/",division_id,"/livestream_scoreboards?utf8=%E2%9C%93&season_division_id=&game_date=",month,"%2F",day,"%2F",year) %>%
+    readLines()
 
-  for(i in 1:length(test)){
+  locs <- grep("<tr id=\"", raw)
 
-    for(j in 1:length(test[[i]])){
+  assemble_df <- function(loc, next_loc){
 
-      test[[i]][j] <- test[[i]][j] %>% trimws()
+    game_vec <- raw[loc:(next_loc-1)]
 
-    }
+    game_id <- game_vec[grep("<tr id=\"", game_vec)[1]] %>%
+      trimws() %>%
+      stringr::str_remove_all("<tr id=\"contest_|\">")
 
-    test[[i]] <- test[[i]][nzchar(test[[i]])]
+    game_date <- game_vec[grep("<td rowspan=\"2\" valign=\"middle\">", game_vec)[1] + 1] %>%
+      trimws()
 
-  }
+    away_team <- game_vec[grep("<img height=\"20px\" width=\"30px\" alt=\"",game_vec)[1]] %>%
+      strsplit("alt=\"|\" src=\"") %>%
+      magrittr::extract2(1) %>%
+      magrittr::extract(2)
 
-  start_loc <- grep("Attendance",test[[1]])
+    away_team_id <- game_vec[grep("<a target=\"TEAMS_WIN\" class=\"skipMask\" href=\"/teams/",game_vec)[1]] %>%
+      strsplit("href=\"/teams/|\">") %>%
+      magrittr::extract2(1) %>%
+      magrittr::extract(2)
 
-  test[[1]] <- test[[1]][(start_loc+1):length(test[[1]])]
+    away_team_logo <- game_vec[grep("<img height=\"20px\" width=\"30px\" alt=\"",game_vec)[1]] %>%
+      strsplit("alt=\"|\" src=\"") %>%
+      magrittr::extract2(1) %>%
+      magrittr::extract(3) %>%
+      stringr::str_remove_all("\" />")
 
-  assemble_df <- function(game_vector){
+    away_team_runs <- game_vec[grep("<div id=\"score_", game_vec)[1] + 1] %>%
+      trimws()
 
-    if("Canceled" %in% game_vector){
+    home_team <- game_vec[grep("<img height=\"20px\" width=\"30px\" alt=\"",game_vec)[2]] %>%
+      strsplit("alt=\"|\" src=\"") %>%
+      magrittr::extract2(1) %>%
+      magrittr::extract(2)
 
-      num_canceled <- length(grep("Canceled",game_vector))
+    home_team_id <- game_vec[grep("<a target=\"TEAMS_WIN\" class=\"skipMask\" href=\"/teams/",game_vec)[2]] %>%
+      strsplit("href=\"/teams/|\">") %>%
+      magrittr::extract2(1) %>%
+      magrittr::extract(2)
 
-      date_locs <- grep(paste(month,day,year,sep = "/"),game_vector)
+    home_team_logo <- game_vec[grep("<img height=\"20px\" width=\"30px\" alt=\"",game_vec)[2]] %>%
+      strsplit("alt=\"|\" src=\"") %>%
+      magrittr::extract2(1) %>%
+      magrittr::extract(3) %>%
+      stringr::str_remove_all("\" />")
 
-      game_vector <- game_vector[-c(1:(date_locs[num_canceled+1]-1))]
-    }
+    home_team_runs <- game_vec[grep("<div id=\"score_", game_vec)[2] + 1] %>%
+      trimws()
 
-    date <- game_vector[1] %>% stringr::str_remove_all(" \\(1\\)| \\(2\\)")
+    status <- game_vec[grep("<div class=\"livestream", game_vec) + 1] %>%
+      trimws()
 
-    game_vector <- game_vector[!stringr::str_detect(game_vector, " \\(1\\)| \\(2\\)")]
-
-    team1 <- game_vector[grep("\\(",game_vector)[1]] %>% strsplit(" \\(") %>% magrittr::extract2(1) %>% magrittr::extract(1)
-    team2 <- game_vector[grep("\\(",game_vector)[2]] %>% strsplit(" \\(") %>% magrittr::extract2(1) %>% magrittr::extract(1)
-
-    team1_runs <- game_vector[grep("Final",game_vector) - 1] %>% as.numeric
-    team2_runs <- game_vector[length(game_vector)] %>% as.numeric
-
-    upd_game_vector <- game_vector[!(game_vector) %in%
-                                     c(date, team1, team2, team1_runs, team2_runs, "Final")]
-
-    upd_game_vector <- upd_game_vector[-c(length(upd_game_vector), length(upd_game_vector) - 1)]
-
-    game_df <- data.frame(date, team1, team2, team1_runs, team2_runs)
+    game_df <- data.frame(away_team, away_team_id, away_team_logo, away_team_runs,
+                          home_team, home_team_id, home_team_logo, home_team_runs,
+                          game_id, status) %>%
+      filter(status == "Final")
 
     return(game_df)
 
@@ -99,11 +110,26 @@ get_ncaa_scoreboard <- function(date){
 
   games_df <- data.frame()
 
-  for(i in 1:(length(test)-1)){
+  for(i in 1:(length(locs) - 2)){
 
-    games_df <- rbind(games_df, assemble_df(test[[i]]))
+    if(i %% 2 == 0) next
+
+    loc <- locs[i]
+
+    if(i == length(locs) - 3){
+      next_loc <- length(raw)
+    } else{
+      next_loc <- locs[i + 2]
+    }
+
+    games_df <- rbind(games_df, assemble_df(loc, loc + 100))
 
   }
+
+  games_df <- games_df %>%
+    dplyr::filter(away_team_runs != "") %>%
+    dplyr::mutate(home_team_runs = as.numeric(home_team_runs),
+                  away_team_runs = as.numeric(away_team_runs))
 
   return(games_df)
 

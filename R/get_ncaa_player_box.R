@@ -1,58 +1,24 @@
-#' Get all box scores for a team's entire season (pitching, hitting, and fielding)
+#' Get all box scores for a given game id
 #'
-#' @param team_id get team ids from get_ncaa_teams function
-#' @description only has data for 2021, 2022, and 2023 and only has D1 for now
+#' @param team_id get game ids from get_ncaa_scoreboard function
 #'
 #' @return named list with three elements, "Hitting", "Pitching" and "Fielding".
-#' Each contains a dataframe of every box score for that team's season
+#' Each contains a dataframe of the box scores for that game
 #' @importFrom glue glue
 #' @importFrom dplyr filter pull mutate
+#' @importFrom janitor clean_names
+#' @importFrom stringr str_remove_all
 #' @export
 #'
 #' @examples
-#' try(get_ncaa_player_box(549186))
-get_ncaa_player_box <- function(team_id){
+#' try(get_ncaa_player_box(2377042))
+get_ncaa_player_box <- function(game_id){
 
   options(warn = -1)
 
-  team_site <- try(glue::glue("https://stats.ncaa.org/teams/{team_id}") %>%
-    readLines())
-
-  if("try-error" == class(team_site)) stop("Invalid team id")
-
-  ids <- rbind(get_ncaa_teams(2021),
-               get_ncaa_teams(2022),
-               get_ncaa_teams(2023))
-
-  team_id_curr <- team_id
-
-  team_name <- ids %>%
-    dplyr::filter(team_id == team_id_curr) %>%
-    dplyr::pull(team_name)
-
-  games <- grep("http://web2.ncaa.org/ncaa_style/img/All_Logos", team_site)[2:56] + 3
-
-  games <- games[which(stringr::str_detect(team_site[games],"BOX_SCORE_WINDOW"))]
-
-  url_exts <- c()
-
-  for(i in 1:length(games)){
-
-    current_ext <- as.numeric(stringr::str_split(team_site[games[i]],"          <a target=\"BOX_SCORE_WINDOW\" class=\"skipMask\" href=\"/contests/|/box_score")[[1]][2])
-
-    current_html <- glue::glue("https://stats.ncaa.org/contests/{current_ext}/box_score") %>% readLines()
-
-    url <- current_html[grep("Play by Play",current_html)[1]]
-
-    url_upd <- as.numeric(stringr::str_split(url, "\t\t\t<a href=\"/game/play_by_play/|\">Play by Play</a>")[[1]][2])
-
-    url_exts <- append(url_exts, url_upd)
-
-  }
-
   get_hitting_box <- function(id){
 
-    raw <- glue::glue("https://stats.ncaa.org/game/box_score/{id}") %>%
+    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
       rvest::read_html() %>%
       rvest::html_table()
 
@@ -61,9 +27,10 @@ get_ncaa_player_box <- function(team_id){
 
     upd <- rbind(raw[[6]],raw[[7]]) %>%
       `names<-`(raw[[6]][2,]) %>%
-      dplyr::filter(!(Player %in% c(ids$team_name,"Player","Totals")))
+      janitor::clean_names() %>%
+      dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
 
-    upd$team <- ifelse(upd$Player %in% raw[[6]]$X1, first_team, second_team)
+    upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
     upd[upd == ""] <- "0"
 
     upd <- upd %>%
@@ -75,7 +42,13 @@ get_ncaa_player_box <- function(team_id){
 
   get_pitching_box <- function(id){
 
-    raw <- glue::glue("https://stats.ncaa.org/game/box_score/{id}?year_stat_category_id=15021") %>%
+    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
+      readLines()
+
+    pitching_id <- raw[grep("\t   <a href=\"/game/box_score/", raw)] %>%
+      stringr::str_remove_all("\t   <a href=\"/game/box_score/|\">Box Score </a>")
+
+    raw <- glue::glue("https://stats.ncaa.org/game/box_score/{pitching_id}?year_stat_category_id=15021") %>%
       rvest::read_html() %>%
       rvest::html_table()
 
@@ -84,15 +57,16 @@ get_ncaa_player_box <- function(team_id){
 
     upd <- rbind(raw[[6]],raw[[7]]) %>%
       `names<-`(raw[[6]][2,]) %>%
-      dplyr::filter(!(Player %in% c(ids$team_name,"Player","Totals")))
+      janitor::clean_names() %>%
+      dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
 
-    upd$team <- ifelse(upd$Player %in% raw[[6]]$X1, first_team, second_team)
+    upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
     upd[upd == ""] <- "0"
     upd[] <- lapply(upd, gsub, pattern="/", replacement="")
 
     upd <- upd %>%
       dplyr::mutate(across(3:26, as.numeric)) %>%
-      dplyr::filter(IP > 0)
+      dplyr::filter(ip > 0)
 
     return(upd)
 
@@ -100,7 +74,13 @@ get_ncaa_player_box <- function(team_id){
 
   get_fielding_box <- function(id){
 
-    raw <- glue::glue("https://stats.ncaa.org/game/box_score/{id}?year_stat_category_id=15022") %>%
+    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
+      readLines()
+
+    fielding_id <- raw[grep("\t   <a href=\"/game/box_score/", raw)] %>%
+      stringr::str_remove_all("\t   <a href=\"/game/box_score/|\">Box Score </a>")
+
+    raw <- glue::glue("https://stats.ncaa.org/game/box_score/{fielding_id}?year_stat_category_id=15022") %>%
       rvest::read_html() %>%
       rvest::html_table()
 
@@ -109,9 +89,10 @@ get_ncaa_player_box <- function(team_id){
 
     upd <- rbind(raw[[6]],raw[[7]]) %>%
       `names<-`(raw[[6]][2,]) %>%
-      dplyr::filter(!(Player %in% c(ids$team_name,"Player","Totals")))
+      janitor::clean_names() %>%
+      dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
 
-    upd$team <- ifelse(upd$Player %in% raw[[6]]$X1, first_team, second_team)
+    upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
     upd[upd == ""] <- "0"
     upd[] <- lapply(upd, gsub, pattern="/", replacement="")
 
@@ -122,24 +103,9 @@ get_ncaa_player_box <- function(team_id){
 
   }
 
-  hitting <- data.frame()
-  pitching <- data.frame()
-  fielding <- data.frame()
-
-  for(i in 1:length(url_exts)){
-
-    date_raw <- glue::glue("https://stats.ncaa.org/game/box_score/{url_exts[i]}") %>%
-      rvest::read_html() %>%
-      rvest::html_table() %>%
-      magrittr::extract2(3)
-
-    date <- as.character(date_raw[1,2])
-
-    hitting <- rbind(hitting, get_hitting_box(url_exts[i]) %>% dplyr::mutate(game_date = date))
-    pitching <- rbind(pitching, get_pitching_box(url_exts[i]) %>% dplyr::mutate(game_date = date))
-    fielding <- rbind(fielding, get_fielding_box(url_exts[i]) %>% dplyr::mutate(game_date = date))
-
-  }
+  hitting <- try(get_hitting_box(game_id))
+  pitching <- try(get_pitching_box(game_id))
+  fielding <- try(get_fielding_box(game_id))
 
   return(list("Hitting" = hitting,
               "Pitching" = pitching,
