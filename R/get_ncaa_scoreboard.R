@@ -101,7 +101,7 @@ get_ncaa_scoreboard <- function(date){
 
     game_df <- data.frame(away_team, away_team_id, away_team_logo, away_team_runs,
                           home_team, home_team_id, home_team_logo, home_team_runs,
-                          game_id, status) %>%
+                          game_date, game_id, status) %>%
       filter(status == "Final")
 
     return(game_df)
