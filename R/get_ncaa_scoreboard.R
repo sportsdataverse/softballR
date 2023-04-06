@@ -129,7 +129,8 @@ get_ncaa_scoreboard <- function(date){
   games_df <- games_df %>%
     dplyr::filter(away_team_runs != "") %>%
     dplyr::mutate(home_team_runs = as.numeric(home_team_runs),
-                  away_team_runs = as.numeric(away_team_runs))
+                  away_team_runs = as.numeric(away_team_runs),
+                  game_date = stringr::str_remove_all(game_date, " \\(1\\)| \\(2\\)"))
 
   return(games_df)
 
