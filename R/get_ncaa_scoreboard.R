@@ -10,6 +10,7 @@
 #' @importFrom dplyr case_when
 #' @importFrom magrittr extract extract2
 #' @importFrom rvest read_html html_text
+#' @importFrom glue glue
 #' @export
 #'
 #' @examples
@@ -37,15 +38,17 @@ get_ncaa_scoreboard <- function(date){
 
   division_id <- dplyr::case_when(year == 2023 ~ 18101,
                                   year == 2022 ~ 17840,
-                                  year == 2021 ~ 15620,
-                                  year == 2020 ~ 15220,
+                                  year == 2021 ~ 17540,
+                                  year == 2020 ~ 17103,
                                   year == 2019 ~ 16820)
 
 
-  raw <- paste0("https://stats.ncaa.org/season_divisions/",division_id,"/livestream_scoreboards?utf8=%E2%9C%93&season_division_id=&game_date=",month,"%2F",day,"%2F",year) %>%
+  raw <- glue::glue("https://stats.ncaa.org/season_divisions/{division_id}/livestream_scoreboards?utf8=%E2%9C%93&season_division_id=&game_date={month}%2F{day}%2F{year}&conference_id=0&tournament_id=&commit=Submit") %>%
     readLines()
 
   locs <- grep("<tr id=\"", raw)
+
+  if(length(locs) == 0) return(NULL)
 
   assemble_df <- function(loc, next_loc){
 
@@ -131,6 +134,8 @@ get_ncaa_scoreboard <- function(date){
     dplyr::mutate(home_team_runs = as.numeric(home_team_runs),
                   away_team_runs = as.numeric(away_team_runs),
                   game_date = stringr::str_remove_all(game_date, " \\(1\\)| \\(2\\)"))
+
+  print(paste0(date, ": completed"))
 
   return(games_df)
 

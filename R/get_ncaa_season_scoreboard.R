@@ -15,7 +15,7 @@ get_ncaa_season_scoreboard <- function(season){
 
   s <- try(as.numeric(season))
 
-  if("try-error" %in% class(s) || is.na(s) || s < 2022 || s > 2023){
+  if("try-error" %in% class(s) || is.na(s) || s < 2019 || s > 2023){
     stop("Invalid Season")
   }
 
@@ -28,19 +28,9 @@ get_ncaa_season_scoreboard <- function(season){
 
   scoreboard <- data.frame()
 
-  for(i in seq(start_date,min(end_date,Sys.Date()),1)){
-    date = as.character(as.Date(i,origin = "1970-01-01"))
+  dates <- seq(start_date,min(end_date,Sys.Date()),1)
 
-    temp <- try(get_ncaa_scoreboard(date),silent = TRUE)
-
-    if("try-error" %in% class(temp)){
-      next
-    }
-
-    print(date)
-
-    scoreboard <- rbind(scoreboard,temp)
-  }
+  scoreboard <- do.call(rbind, lapply(X = dates, FUN = get_ncaa_scoreboard))
 
   return(scoreboard)
 }
