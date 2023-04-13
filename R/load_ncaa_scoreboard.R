@@ -1,7 +1,7 @@
 #' Load NCAA Scoreboard
 #'
 #' @param season season (YYYY)
-#' @description ONLY HAS 2023 DATA FOR NOW
+#' @description Has data for 2019 - 2023
 #'
 #' @return dataframe of all games from NCAA website from selected season
 #' @importFrom glue glue
