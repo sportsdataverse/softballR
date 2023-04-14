@@ -1,13 +1,14 @@
 #' Get all NCAA softball scores for a given day
 #'
 #' @author Tyson King
-#' @description for now only supports 2022 and 2023 seasons, will update further later
+#' @description Supports 2019-2023 for D1 and only 2023 for D2 and D3
 #' @param date "YYYY-MM-DD"
+#' @param division "D1", "D2", or "D3"
 #'
 #' @return data frame of date, team names and their scores
 #' @importFrom lubridate month year day
 #' @importFrom stringr str_remove_all str_detect
-#' @importFrom dplyr case_when
+#' @importFrom dplyr case_when distinct
 #' @importFrom magrittr extract extract2
 #' @importFrom rvest read_html html_text
 #' @importFrom glue glue
@@ -16,11 +17,13 @@
 #' @examples
 #' date = "2022-03-05"
 #' try(get_ncaa_scoreboard(date))
-get_ncaa_scoreboard <- function(date){
+get_ncaa_scoreboard <- function(date, division = "D1"){
 
   if(as.Date(date) >= Sys.Date()){
     stop("Invalid Date")
   }
+
+  if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
 
   if(class(date) != "Date"){
 
@@ -36,11 +39,15 @@ get_ncaa_scoreboard <- function(date){
 
   }
 
-  division_id <- dplyr::case_when(year == 2023 ~ 18101,
-                                  year == 2022 ~ 17840,
-                                  year == 2021 ~ 17540,
-                                  year == 2020 ~ 17103,
-                                  year == 2019 ~ 16820)
+  if((division != "D1" & year != 2023)) stop("Invalid Date")
+
+  division_id <- dplyr::case_when(division == "D1" & year == 2023 ~ 18101,
+                                  division == "D1" & year == 2022 ~ 17840,
+                                  division == "D1" & year == 2021 ~ 17540,
+                                  division == "D1" & year == 2020 ~ 17103,
+                                  division == "D1" & year == 2019 ~ 16820,
+                                  division == "D2" & year == 2023 ~ 18102,
+                                  division == "D3" & year == 2023 ~ 18103)
 
 
   raw <- glue::glue("https://stats.ncaa.org/season_divisions/{division_id}/livestream_scoreboards?utf8=%E2%9C%93&season_division_id=&game_date={month}%2F{day}%2F{year}&conference_id=0&tournament_id=&commit=Submit") %>%
@@ -133,7 +140,8 @@ get_ncaa_scoreboard <- function(date){
     dplyr::filter(away_team_runs != "") %>%
     dplyr::mutate(home_team_runs = as.numeric(home_team_runs),
                   away_team_runs = as.numeric(away_team_runs),
-                  game_date = stringr::str_remove_all(game_date, " \\(1\\)| \\(2\\)"))
+                  game_date = stringr::str_remove_all(game_date, " \\(1\\)| \\(2\\)")) %>%
+    dplyr::distinct()
 
   print(paste0(date, ": completed"))
 

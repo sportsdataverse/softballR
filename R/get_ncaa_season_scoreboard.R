@@ -1,7 +1,8 @@
 #' Get all NCAA softball scores for a given season
 #'
+#' @description Supports 2019-2023 for D1 and only 2023 for D2 and D3
 #' @param season YYYY
-#' @description for now only supports 2022 and 2023 seasons, will update further later
+#' @param division "D1", "D2", or "D3"
 #'
 #' @return data frame of date, team names and their scores
 #' @importFrom dplyr filter select
@@ -10,8 +11,10 @@
 #' @examples
 #' season = "2023"
 #' try(get_ncaa_season_scoreboard(season))
-get_ncaa_season_scoreboard <- function(season){
+get_ncaa_season_scoreboard <- function(season, division = "D1"){
   options(warn = -1)
+
+  if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
 
   s <- try(as.numeric(season))
 
@@ -28,9 +31,9 @@ get_ncaa_season_scoreboard <- function(season){
 
   scoreboard <- data.frame()
 
-  dates <- seq(start_date,min(end_date,Sys.Date()),1)
+  dates <- seq(start_date,min(end_date,Sys.Date()-1),1)
 
-  scoreboard <- do.call(rbind, lapply(X = dates, FUN = get_ncaa_scoreboard))
+  scoreboard <- do.call(rbind, lapply(X = dates, FUN = get_ncaa_scoreboard, division = division))
 
   return(scoreboard)
 }
