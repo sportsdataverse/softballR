@@ -52,7 +52,7 @@ get_rankings <- function(source){
   }
 
   if(source == "USA Today"){
-    rankings <- "https://nfca.org/component/com_nfca/Itemid,230/list,1/pdiv,div1/top25,1/year,2022/" %>% rvest::read_html() %>% rvest::html_table()
+    rankings <- "https://nfca.org/component/com_nfca/Itemid,230/list,1/pdiv,div1/top25,1/year,2023/" %>% rvest::read_html() %>% rvest::html_table()
     rankings <- rankings[[1]] %>%
       tidyr::separate(Team,c("Team","First Place Votes"),"\\(",fill = "right") %>%
       dplyr::mutate(`First Place Votes` = stringr::str_remove(`First Place Votes`,"\\)"),
