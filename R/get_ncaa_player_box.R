@@ -31,10 +31,12 @@ get_ncaa_player_box <- function(game_id){
       dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
 
     upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
+    upd$opponent <- ifelse(upd$team == first_team, second_team, first_team)
     upd[upd == ""] <- "0"
 
     upd <- upd %>%
-      dplyr::mutate(across(3:26, as.numeric))
+      dplyr::mutate(across(3:26, as.numeric)) %>%
+      dplyr::mutate(game_id = game_id)
 
     return(upd)
 
@@ -61,12 +63,14 @@ get_ncaa_player_box <- function(game_id){
       dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
 
     upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
+    upd$opponent <- ifelse(upd$team == first_team, second_team, first_team)
     upd[upd == ""] <- "0"
     upd[] <- lapply(upd, gsub, pattern="/", replacement="")
 
     upd <- upd %>%
       dplyr::mutate(across(3:26, as.numeric)) %>%
-      dplyr::filter(ip > 0)
+      dplyr::filter(ip > 0) %>%
+      dplyr::mutate(game_id = game_id)
 
     return(upd)
 
@@ -93,11 +97,13 @@ get_ncaa_player_box <- function(game_id){
       dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
 
     upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
+    upd$opponent <- ifelse(upd$team == first_team, second_team, first_team)
     upd[upd == ""] <- "0"
     upd[] <- lapply(upd, gsub, pattern="/", replacement="")
 
     upd <- upd %>%
-      dplyr::mutate(across(3:12, as.numeric))
+      dplyr::mutate(across(3:12, as.numeric)) %>%
+      dplyr::mutate(game_id = game_id)
 
     return(upd)
 
