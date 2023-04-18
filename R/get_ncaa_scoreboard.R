@@ -1,7 +1,7 @@
 #' Get all NCAA softball scores for a given day
 #'
 #' @author Tyson King
-#' @description Supports 2019-2023 for D1 and only 2023 for D2 and D3
+#' @description Supports 2017-2023 for D1 and only 2023 for D2 and D3
 #' @param date "YYYY-MM-DD"
 #' @param division "D1", "D2", or "D3"
 #'
@@ -46,6 +46,8 @@ get_ncaa_scoreboard <- function(date, division = "D1"){
                                   division == "D1" & year == 2021 ~ 17540,
                                   division == "D1" & year == 2020 ~ 17103,
                                   division == "D1" & year == 2019 ~ 16820,
+                                  division == "D1" & year == 2018 ~ 15196,
+                                  division == "D1" & year == 2017 ~ 13300,
                                   division == "D2" & year == 2023 ~ 18102,
                                   division == "D3" & year == 2023 ~ 18103)
 
