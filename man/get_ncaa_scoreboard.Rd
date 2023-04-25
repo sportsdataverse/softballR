@@ -4,16 +4,18 @@
 \alias{get_ncaa_scoreboard}
 \title{Get all NCAA softball scores for a given day}
 \usage{
-get_ncaa_scoreboard(date)
+get_ncaa_scoreboard(date, division = "D1")
 }
 \arguments{
 \item{date}{"YYYY-MM-DD"}
+
+\item{division}{"D1", "D2", or "D3"}
 }
 \value{
 data frame of date, team names and their scores
 }
 \description{
-for now only supports 2022 and 2023 seasons, will update further later
+Supports 2017-2023 for D1 and only 2023 for D2 and D3
 }
 \examples{
 date = "2022-03-05"

@@ -4,16 +4,18 @@
 \alias{load_ncaa_scoreboard}
 \title{Load NCAA Scoreboard}
 \usage{
-load_ncaa_scoreboard(season)
+load_ncaa_scoreboard(season, division = "D1")
 }
 \arguments{
-\item{season}{season (YYYY)}
+\item{season}{YYYY}
+
+\item{division}{"D1", "D2", or "D3"}
 }
 \value{
 dataframe of all games from NCAA website from selected season
 }
 \description{
-ONLY HAS 2023 DATA FOR NOW
+Supports 2019-2023 for D1 and only 2023 for D2 and D3
 }
 \examples{
 try(load_ncaa_scoreboard(2023))
