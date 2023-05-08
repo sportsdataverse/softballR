@@ -1,9 +1,11 @@
 # softballR <a href='https://github.com/tmking2002/softballR/'><img src="https://raw.githubusercontent.com/tmking2002/softballR/main/logo.png" align="right"  width="20%" min-width="100px"/></a>
-Package that scrapes and cleans college softball data from NCAA, ESPN, and a few others.
+<b>softballR</b> is an R package for acquiring NCAA softball data.
+
+The package has functions for obtaining game-by-game scores, box scores, (some) play-by-play, and some different rankings websites. 
 
 ## Installation
 
-You can install the current version (0.6.0) of the package like this:
+You can install the current version (1.0.0) of the package like this:
       
 ``` r
 # install.packages("devtools")
@@ -12,43 +14,32 @@ devtools::install_github("tmking2002/softballR")
 
 ## Important Functions 
 
-### Get ESPN Play-by-Play for a Given Game ID
-
-``` r
-id <- 401444869 # Game 2 of 2022 WCWS
-pbp <- get_espn_pbp(id)
-```
-
-### ** I WOULD HIGHLY RECOMMEND 'load_ncaa_season_scoreboard' *
-
-### Get basic stats (Runs, Hits, Errors, Etc.) for all games in a given season
-
-``` r
-espn_season_scoreboard <- load_espn_season_scoreboard(2022)
-```
-
 ### Get scores for all games in a given season
 
 ``` r
-ncaa_season_scoreboard <- load_ncaa_season_scoreboard(2023)
+scoreboard <- softballR::load_ncaa_softball_scoreboard(season = 2023)
 ```
 
-### Get all play by play data for a certain team's season
-
-```r
-# get team id for 2023 oklahoma team
-oklahoma_id <- get_ncaa_teams(2023) %>% 
-  dplyr::filter(team_name == "Oklahoma") %>% 
-  dplyr::pull(team_id)
-  
-pbp <- get_ncaa_pbp(oklahoma_id)
-```
-
-### Get the Current RPI Rankings
+### Get box scores for all games in a given season (Only has 2023 data for now)
 
 ``` r
-rankings <- get_rankings("RPI")
+hitting <- softballR::load_ncaa_softball_playerbox(season = 2023, category = "Hitting")
+
+pitching <- softballR::load_ncaa_softball_playerbox(season = 2023, category = "Pitching")
 ```
+
+### Get all NCAA play by play data for a given team and season (2021-2023 for now)
+
+``` r
+# Use Oklahoma 2022 as example
+
+team_id <- softballR::ncaa_softball_teams(2022) %>%
+    dplyr::filter(team_name == "Oklahoma") %>%
+    dplyr::pull(team_id)
+    
+pbp <- softballR::ncaa_softball_season_pbp(team_id)
+```
+
 
 ## **Author**
 
