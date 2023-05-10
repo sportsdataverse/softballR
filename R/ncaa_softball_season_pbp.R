@@ -30,7 +30,7 @@ ncaa_softball_season_pbp <- function(team_id){
   team_id_curr <- team_id
 
   team_name <- ids %>%
-    dplyr::filter(team_id == team_id_curr) %>%
+    dplyr::filter(softball_id == team_id_curr) %>%
     dplyr::pull(team_name)
 
   games <- grep("http://web2.ncaa.org/ncaa_style/img/All_Logos", team_site)[2:56] + 3

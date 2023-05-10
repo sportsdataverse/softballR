@@ -35,7 +35,7 @@ pitching <- softballR::load_ncaa_softball_playerbox(season = 2023, category = "P
 
 team_id <- softballR::ncaa_softball_teams(2022) %>%
     dplyr::filter(team_name == "Oklahoma") %>%
-    dplyr::pull(team_id)
+    dplyr::pull(softball_id)
     
 pbp <- softballR::ncaa_softball_season_pbp(team_id)
 ```
