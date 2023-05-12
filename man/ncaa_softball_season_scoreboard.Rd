@@ -7,7 +7,7 @@
 ncaa_softball_season_scoreboard(season, division = "D1")
 }
 \arguments{
-\item{season}{YYYY}
+\item{season}{YYYY 2016-2023}
 
 \item{division}{"D1", "D2", or "D3"}
 }
@@ -15,7 +15,7 @@ ncaa_softball_season_scoreboard(season, division = "D1")
 data frame of date, team names and their scores
 }
 \description{
-Supports 2017-2023 for D1 and only 2023 for D2 and D3
+Provides the score and some other info for all D1, D2, and D3 games from 2016-2023 (for now)
 }
 \examples{
 season = "2023"

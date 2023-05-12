@@ -4,16 +4,18 @@
 \alias{ncaa_softball_teams}
 \title{Get all NCAA softball team names and ids}
 \usage{
-ncaa_softball_teams(season)
+ncaa_softball_teams(season, division = "D1")
 }
 \arguments{
 \item{season}{2021, 2022 or 2023}
+
+\item{division}{"D1", "D2", or "D3}
 }
 \value{
 data frame of date, team names and their scores
 }
 \description{
-Only has division 1 teams for now
+2021-2023 for D1, only 2023 for D2 and D3
 }
 \examples{
 try(ncaa_softball_teams(2023))

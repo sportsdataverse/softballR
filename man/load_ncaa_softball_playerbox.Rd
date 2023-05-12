@@ -4,7 +4,7 @@
 \alias{load_ncaa_softball_playerbox}
 \title{Load NCAA Player Box Scores}
 \usage{
-load_ncaa_softball_playerbox(season = 2023, category)
+load_ncaa_softball_playerbox(season = 2023, category, division = "D1")
 }
 \arguments{
 \item{season}{YYYY}
@@ -15,7 +15,7 @@ load_ncaa_softball_playerbox(season = 2023, category)
 dataframe of all box scores from NCAA website from selected season
 }
 \description{
-Only supports 2023 data for D1 for now
+Only supports 2023 for now
 }
 \examples{
 try(load_ncaa_softball_playerbox(2023))

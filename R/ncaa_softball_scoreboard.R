@@ -39,8 +39,6 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
 
   }
 
-  if((division != "D1" & year != 2023)) stop("Invalid Date")
-
   division_id <- dplyr::case_when(division == "D1" & year == 2023 ~ 18101,
                                   division == "D1" & year == 2022 ~ 17840,
                                   division == "D1" & year == 2021 ~ 17540,
@@ -48,8 +46,23 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
                                   division == "D1" & year == 2019 ~ 16820,
                                   division == "D1" & year == 2018 ~ 15196,
                                   division == "D1" & year == 2017 ~ 13300,
+                                  division == "D1" & year == 2016 ~ 12981,
                                   division == "D2" & year == 2023 ~ 18102,
-                                  division == "D3" & year == 2023 ~ 18103)
+                                  division == "D2" & year == 2022 ~ 17841,
+                                  division == "D2" & year == 2021 ~ 17541,
+                                  division == "D2" & year == 2020 ~ 17104,
+                                  division == "D2" & year == 2019 ~ 16821,
+                                  division == "D2" & year == 2018 ~ 15197,
+                                  division == "D2" & year == 2017 ~ 13301,
+                                  division == "D2" & year == 2016 ~ 12980,
+                                  division == "D3" & year == 2023 ~ 18103,
+                                  division == "D3" & year == 2022 ~ 17842,
+                                  division == "D3" & year == 2021 ~ 17542,
+                                  division == "D3" & year == 2020 ~ 17105,
+                                  division == "D3" & year == 2019 ~ 16822,
+                                  division == "D3" & year == 2018 ~ 15198,
+                                  division == "D3" & year == 2017 ~ 13302,
+                                  division == "D3" & year == 2016 ~ 12982)
 
 
   raw <- glue::glue("https://stats.ncaa.org/season_divisions/{division_id}/livestream_scoreboards?utf8=%E2%9C%93&season_division_id=&game_date={month}%2F{day}%2F{year}&conference_id=0&tournament_id=&commit=Submit") %>%

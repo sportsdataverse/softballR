@@ -1,7 +1,7 @@
 #' Get all NCAA softball scores for a given season
 #'
-#' @description Supports 2017-2023 for D1 and only 2023 for D2 and D3
-#' @param season YYYY
+#' @description Provides the score and some other info for all D1, D2, and D3 games from 2016-2023 (for now)
+#' @param season YYYY 2016-2023
 #' @param division "D1", "D2", or "D3"
 #'
 #' @return data frame of date, team names and their scores
@@ -18,7 +18,7 @@ ncaa_softball_season_scoreboard <- function(season, division = "D1"){
 
   s <- try(as.numeric(season))
 
-  if("try-error" %in% class(s) || is.na(s) || s < 2017 || s > 2023){
+  if("try-error" %in% class(s) || is.na(s) || s < 2016 || s > 2023){
     stop("Invalid Season")
   }
 
