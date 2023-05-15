@@ -4,6 +4,7 @@
 #' @param season YYYY (2023)
 #' @param category Hitting, Pitching, or Fielding
 #' @importFrom glue glue
+#' @importFrom stringr str_replace
 #'
 #' @return dataframe of all box scores from NCAA website from selected season
 #' @export
@@ -18,6 +19,8 @@ load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1
   if(season != 2023) return("Only includes 2023 data... for now")
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
+
+  division <- stringr::str_replace(division, "D", "d")
 
   if(category == "Hitting"){
 

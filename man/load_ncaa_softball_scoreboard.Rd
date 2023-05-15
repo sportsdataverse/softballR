@@ -7,7 +7,7 @@
 load_ncaa_softball_scoreboard(season, division = "D1")
 }
 \arguments{
-\item{season}{YYYY}
+\item{season}{YYYY format, pass season or vector of seasons}
 
 \item{division}{"D1", "D2", or "D3"}
 }
@@ -15,8 +15,8 @@ load_ncaa_softball_scoreboard(season, division = "D1")
 dataframe of all games from NCAA website from selected season
 }
 \description{
-Supports 2019-2023 for D1 and only 2023 for D2 and D3
+Supports 2016-2023 for all divisions
 }
 \examples{
-try(load_ncaa_softball_scoreboard(2023))
+try(load_ncaa_softball_scoreboard(2022:2023))
 }
