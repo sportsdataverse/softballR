@@ -5,7 +5,7 @@ The package has functions for obtaining game-by-game scores, box scores, (some) 
 
 ## Installation
 
-You can install the current version (1.0.2) of the package like this:
+You can install the current version (1.1.0) of the package like this:
       
 ``` r
 # install.packages("devtools")

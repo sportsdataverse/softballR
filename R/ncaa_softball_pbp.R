@@ -10,12 +10,13 @@
 #' @importFrom dplyr filter pull rename select mutate arrange
 #' @importFrom tidyr separate
 #' @importFrom magrittr %>%
-#' @importFrom glue glue
 #' @export
 #'
 #' @examples
 #' try(ncaa_softball_pbp(2377327))
 ncaa_softball_pbp <- function(game_id){
+
+  options(warn = -1)
 
   box_raw <- glue::glue("https://stats.ncaa.org/contests/{game_id}/box_score") %>%
     readLines()
@@ -85,15 +86,15 @@ ncaa_softball_pbp <- function(game_id){
                   opponent = ifelse(opponent == "", opponent_name, team_name)) %>%
     dplyr::filter(!stringr::str_detect(events, "H: "))
 
+  # Play ID Format: game_id, inning, top/bottom (top = 0, bottom = 1), play #
+
   pbp <- filtered %>%
     dplyr::mutate(top_bottom = top_bottom,
                   game_id = game_id) %>%
-    dplyr::arrange(inning, team) %>%
-    dplyr::mutate(play = stringr::str_extract(events, paste(possible_events, collapse = "|"))) %>%
-    tidyr::separate(events, c("player", "result"), paste(possible_events, collapse = "|"), remove = FALSE) %>%
-    dplyr::rename(batting_team = team,
-                  pitching_team = opponent) %>%
-    dplyr::select(batting_team, pitching_team, home_team_runs, away_team_runs, inning, top_bottom, events, player, play, game_id)
+    dplyr::group_by(inning, top_bottom) %>%
+    dplyr::mutate(play_id = paste0(game_id, "_", inning, "_", as.numeric(top_bottom == "bottom"), "_", dplyr::row_number())) %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(away_team_runs != "Score")
 
   return(pbp)
 

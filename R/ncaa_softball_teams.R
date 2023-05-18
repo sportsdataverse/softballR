@@ -48,7 +48,7 @@ ncaa_softball_teams <- function(season, division = "D1"){
                         scoreboard[c(5,6)] %>% `names<-`(c("team_name","softball_id"))) %>%
     dplyr::distinct()
 
-  teams_final <- merge(teams, team_ids, by = "team_id") %>%
+  teams_final <- merge(teams, team_ids %>% dplyr::select(-team_name), by = "team_id") %>%
     merge(softball_ids, by = "team_name") %>%
     dplyr::select(season, team_name, team_id, softball_id, division, conference,
                   head_coach, wins, losses, ties, win_perc)
