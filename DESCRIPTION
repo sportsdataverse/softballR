@@ -1,7 +1,7 @@
 Package: softballR
 Type: Package
 Title: Easily Accessible College Softball Data
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: 
     c(person(given = "Tyson",
              family = "King",
