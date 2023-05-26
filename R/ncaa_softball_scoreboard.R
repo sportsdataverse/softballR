@@ -155,7 +155,7 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
     dplyr::filter(away_team_runs != "") %>%
     dplyr::mutate(home_team_runs = as.numeric(home_team_runs),
                   away_team_runs = as.numeric(away_team_runs),
-                  game_date = stringr::str_remove_all(game_date, " \\(1\\)| \\(2\\)")) %>%
+                  game_date = stringr::str_remove_all(game_date, " \\(1\\)| \\(2\\)| \\<br/\\>\\*If necessary")) %>%
     dplyr::distinct()
 
   print(paste0(date, ": completed"))
