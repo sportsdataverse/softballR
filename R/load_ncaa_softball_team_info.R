@@ -15,6 +15,8 @@ load_ncaa_softball_team_info <- function(){
 
   info <- try(readRDS(con), silent = TRUE)
 
+  info$season <- ifelse(info$season == 1900, 2000, info$season)
+
   return(info)
 
 }
