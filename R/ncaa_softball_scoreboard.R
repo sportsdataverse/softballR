@@ -76,6 +76,8 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
 
     game_vec <- raw[loc:(next_loc-1)]
 
+    if(any(grepl("Canceled", game_vec))) return(NULL)
+
     game_id <- game_vec[grep("<tr id=\"", game_vec)[1]] %>%
       trimws() %>%
       stringr::str_remove_all("<tr id=\"contest_|\">")
@@ -135,7 +137,7 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
 
   games_df <- data.frame()
 
-  for(i in 1:(length(locs) - 2)){
+  for(i in 1:(length(locs) - 1)){
 
     if(i %% 2 == 0) next
 
@@ -147,9 +149,11 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
       next_loc <- locs[i + 2]
     }
 
-    games_df <- rbind(games_df, assemble_df(loc, loc + 100))
+    games_df <- rbind(games_df, assemble_df(loc, loc + 70))
 
   }
+
+  if(length(games_df)== 0) return(NULL)
 
   games_df <- games_df %>%
     dplyr::filter(away_team_runs != "") %>%

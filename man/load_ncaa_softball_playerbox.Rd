@@ -7,16 +7,18 @@
 load_ncaa_softball_playerbox(season = 2023, category, division = "D1")
 }
 \arguments{
-\item{season}{YYYY (2023)}
+\item{season}{YYYY can also use vector of years}
 
 \item{category}{Hitting, Pitching, or Fielding}
+
+\item{division}{D1, D2, or D3}
 }
 \value{
 dataframe of all box scores from NCAA website from selected season
 }
 \description{
-Only supports 2023 for now (only D1 for fielding)
+2021-2023 for D1 hitting and pitching, only 2023 for everything else
 }
 \examples{
-try(load_ncaa_softball_playerbox(2023))
+try(load_ncaa_softball_playerbox(2021:2023, category = "Hitting"))
 }

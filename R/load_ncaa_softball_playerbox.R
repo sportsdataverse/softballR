@@ -3,6 +3,7 @@
 #' @description 2021-2023 for D1 hitting and pitching, only 2023 for everything else
 #' @param season YYYY can also use vector of years
 #' @param category Hitting, Pitching, or Fielding
+#' @param division D1, D2, or D3
 #' @importFrom glue glue
 #' @importFrom stringr str_replace
 #'
@@ -16,7 +17,7 @@ load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1
 
   if(!(category %in% c("Hitting", "Pitching", "Fielding"))) return("Invalid Category")
 
-  if((season[1] != "2023" | length(season) > 1) & (division != "D1" | category == "Fielding")) return("Only includes 2023 data... for now")
+  if(category == "Fielding" & (length(season) > 1) | season[1] != 2023) return("Only includes 2023 data... for now")
 
   if(min(season < 2021 | max(season > 2023))) return("Invalid Season")
 

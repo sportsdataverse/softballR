@@ -14,7 +14,7 @@ load_ncaa_softball_pbp <- function(season, division = "D1"){
 
   if(!is.numeric(season)) stop("Invalid Input")
 
-  if(season != 2023) stop("Invalid Season")
+  if(min(season < 2021 | max(season > 2023))) stop("Invalid Season")
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid division")
 
