@@ -23,13 +23,15 @@ load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
 
-  if(division != "D3" & category != "Hitting" & !(2021 %in% season)) division <- stringr::str_replace(division, "D", "d")
+  division <- stringr::str_replace(division, "D", "d")
 
   url <- c()
 
   if(category == "Hitting"){
 
     for(i in season){
+      if(division == "d3" & category == "Hitting" & i == 2021) {url <- c(url, "https://github.com/sportsdataverse/softballR-data/blob/main/data/D3_hitting_box_scores_2021.RDS?raw=true"); next}
+
       url <- c(url, glue::glue("https://github.com/tmking2002/softballR-data/blob/main/data/{division}_hitting_box_scores_{i}.RDS?raw=true"))
     }
 
