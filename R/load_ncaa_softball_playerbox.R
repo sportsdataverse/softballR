@@ -23,7 +23,7 @@ load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
 
-  division <- stringr::str_replace(division, "D", "d")
+  if(division != "D3" & category != "Hitting" & season != 2021) division <- stringr::str_replace(division, "D", "d")
 
   url <- c()
 
