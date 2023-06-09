@@ -17,7 +17,7 @@ load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1
 
   if(!(category %in% c("Hitting", "Pitching", "Fielding"))) return("Invalid Category")
 
-  if(category == "Fielding" & (length(season) > 1) | season[1] != 2023) return("Only includes 2023 data... for now")
+  if(category == "Fielding" & (length(season) > 1 | season[1] != 2023)) return("Only includes 2023 data... for now")
 
   if(min(season < 2021 | max(season > 2023))) return("Invalid Season")
 
