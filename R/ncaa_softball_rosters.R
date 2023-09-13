@@ -14,7 +14,7 @@
 #' @examples try(ncaa_softball_rosters(2023, "D1"))
 ncaa_softball_rosters <- function(season, division){
 
-  if(!(season %in% c(2021, 2022, 2023))) stop("Invalid season")
+  if(as.numeric(season) < 2012 | as.numeric(season > 2023)) stop("Invalid season")
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid division")
 
@@ -24,7 +24,16 @@ ncaa_softball_rosters <- function(season, division){
 
   roster_ext <- dplyr::case_when(season == 2023 ~ "16361",
                                  season == 2022 ~ "15940",
-                                 season == 2021 ~ "15620")
+                                 season == 2021 ~ "15620",
+                                 season == 2020 ~ "15220",
+                                 season == 2019 ~ "14800",
+                                 season == 2018 ~ "13430",
+                                 season == 2017 ~ "12580",
+                                 season == 2016 ~ "12381",
+                                 season == 2015 ~ "12120",
+                                 season == 2014 ~ "11640",
+                                 season == 2013 ~ "11300",
+                                 season == 2012 ~ "10900")
 
   teams <- load_ncaa_softball_team_info() %>%
     dplyr::filter(season == .env$season & division == division_id) %>%
