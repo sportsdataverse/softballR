@@ -20,9 +20,9 @@ ncaa_softball_season_playerbox <- function(team_id){
 
   if("try-error" == class(team_site)) stop("Invalid team id")
 
-  ids <- rbind(get_ncaa_teams(2021),
-               get_ncaa_teams(2022),
-               get_ncaa_teams(2023))
+  ids <- rbind(ncaa_softball_teams(2021),
+               ncaa_softball_teams(2022),
+               ncaa_softball_teams(2023))
 
   team_id_curr <- team_id
 

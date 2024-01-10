@@ -18,5 +18,5 @@ dataframe of all games from NCAA website from selected season
 Supports 2016-2023 for all divisions
 }
 \examples{
-try(load_ncaa_softball_scoreboard(2022:2023))
+try(load_ncaa_softball_scoreboard(2022:2024))
 }

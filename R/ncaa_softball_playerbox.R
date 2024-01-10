@@ -47,10 +47,12 @@ ncaa_softball_playerbox <- function(game_id){
     raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
       readLines()
 
-    pitching_id <- raw[grep("\t   <a href=\"/game/box_score/", raw)] %>%
-      stringr::str_remove_all("\t   <a href=\"/game/box_score/|\">Box Score </a>")
+    pitching_url <- raw[grep("Pitching", raw)] %>% 
+      trimws() %>% 
+      stringr::str_remove_all("\\<a href=\"|\"\\>Pitching\\</a\\>  &nbsp;\\|") %>% 
+      paste0("https://stats.ncaa.org/", .)
 
-    raw <- glue::glue("https://stats.ncaa.org/game/box_score/{pitching_id}?year_stat_category_id=15021") %>%
+    raw <- pitching_url %>%
       rvest::read_html() %>%
       rvest::html_table()
 
@@ -81,10 +83,12 @@ ncaa_softball_playerbox <- function(game_id){
     raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
       readLines()
 
-    fielding_id <- raw[grep("\t   <a href=\"/game/box_score/", raw)] %>%
-      stringr::str_remove_all("\t   <a href=\"/game/box_score/|\">Box Score </a>")
+    fielding_url <- raw[grep("Fielding", raw)] %>% 
+      trimws() %>% 
+      stringr::str_remove_all("\\<a href=\"|\"\\>Fielding\\</a\\>") %>% 
+      paste0("https://stats.ncaa.org/", .)
 
-    raw <- glue::glue("https://stats.ncaa.org/game/box_score/{fielding_id}?year_stat_category_id=15022") %>%
+    raw <- fielding_url %>% 
       rvest::read_html() %>%
       rvest::html_table()
 
@@ -102,7 +106,7 @@ ncaa_softball_playerbox <- function(game_id){
     upd[] <- lapply(upd, gsub, pattern="/", replacement="")
 
     upd <- upd %>%
-      dplyr::mutate(across(3:12, as.numeric)) %>%
+      dplyr::mutate(across(3:11, as.numeric)) %>%
       dplyr::mutate(game_id = game_id)
 
     return(upd)

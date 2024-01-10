@@ -10,8 +10,8 @@
 #' @return dataframe of all box scores from NCAA website from selected season
 #' @export
 #'
-#' @examples try(load_ncaa_softball_playerbox(2021:2023, category = "Hitting"))
-load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1"){
+#' @examples try(load_ncaa_softball_playerbox(2021:2024, category = "Hitting"))
+load_ncaa_softball_playerbox <- function(season = 2024, category, division = "D1"){
 
   if(!is.numeric(season)) return("Invalid Season")
 
@@ -19,8 +19,8 @@ load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1
 
   if(category == "Fielding" & (length(season) > 1 | season[1] != 2023)) return("Only includes 2023 data... for now")
 
-  if(min(season < 2021 | max(season > 2023)) & category == "Pitching") return("Invalid Season")
-  if(min(season < 2015 | max(season > 2023)) & category == "Hitting") return("Invalid Season")
+  if(min(season < 2016 | max(season > 2024)) & category == "Pitching") return("Invalid Season")
+  if(min(season < 2016 | max(season > 2024)) & category == "Hitting") return("Invalid Season")
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
 
@@ -39,6 +39,8 @@ load_ncaa_softball_playerbox <- function(season = 2023, category, division = "D1
   } else if(category == "Pitching"){
 
     for(i in season){
+      if(division == "d3" & category == "Pitching" & i %in% 2016:2020) {url <- c(url, glue::glue("https://github.com/sportsdataverse/softballR-data/blob/main/data/D3_pitching_box_scores_{i}.RDS?raw=true")); next}
+      
       url <- c(url, glue::glue("https://github.com/tmking2002/softballR-data/blob/main/data/{division}_pitching_box_scores_{i}.RDS?raw=true"))
     }
 

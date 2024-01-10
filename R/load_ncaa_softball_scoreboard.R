@@ -8,14 +8,15 @@
 #' @importFrom glue glue
 #' @export
 #'
-#' @examples try(load_ncaa_softball_scoreboard(2022:2023))
+#' @examples try(load_ncaa_softball_scoreboard(2022:2024))
 load_ncaa_softball_scoreboard <- function(season, division = "D1"){
 
   if(!is.numeric(season)) return("Invalid Input")
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
 
-  if(min(season) < 2016 | max(season) > 2023) stop("Invalid Season")
+  if(min(season) < 2012 | max(season) > 2024) stop("Invalid Season")
+  if(min(season) < 2016 & division != "D1") stop("Invalid Season")
 
   if(length(season) == 1){
 

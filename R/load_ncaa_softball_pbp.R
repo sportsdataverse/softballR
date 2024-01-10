@@ -9,12 +9,12 @@
 #' @importFrom stringr str_replace
 #' @export
 #'
-#' @examples try(load_ncaa_softball_pbp(2023))
+#' @examples try(load_ncaa_softball_pbp(2024))
 load_ncaa_softball_pbp <- function(season, division = "D1"){
 
   if(!is.numeric(season)) stop("Invalid Input")
 
-  if(min(season < 2021 | max(season > 2023))) stop("Invalid Season")
+  if(min(season < 2021 | max(season > 2024))) stop("Invalid Season")
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid division")
 

@@ -18,5 +18,5 @@ dataframe of all play by play data for an NCAA season
 Only supports 2023 season for now
 }
 \examples{
-try(load_ncaa_softball_pbp(2023))
+try(load_ncaa_softball_pbp(2024))
 }
