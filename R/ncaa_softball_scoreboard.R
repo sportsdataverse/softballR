@@ -1,7 +1,7 @@
 #' Get all NCAA softball scores for a given day
 #'
 #' @author Tyson King
-#' @description Supports 2017-2023 for D1 and only 2023 for D2 and D3
+#' @description Supports 2017-2024 for D1 and only 2023 for D2 and D3
 #' @param date "YYYY-MM-DD"
 #' @param division "D1", "D2", or "D3"
 #'
@@ -39,7 +39,8 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
 
   }
 
-  division_id <- dplyr::case_when(division == "D1" & year == 2023 ~ 18101,
+  division_id <- dplyr::case_when(division == "D1" & year == 2024 ~ 18261,
+                                  division == "D1" & year == 2023 ~ 18101,
                                   division == "D1" & year == 2022 ~ 17840,
                                   division == "D1" & year == 2021 ~ 17540,
                                   division == "D1" & year == 2020 ~ 17103,
@@ -47,10 +48,7 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
                                   division == "D1" & year == 2018 ~ 15196,
                                   division == "D1" & year == 2017 ~ 13300,
                                   division == "D1" & year == 2016 ~ 12981,
-                                  division == "D1" & year == 2015 ~ 12400,
-                                  division == "D1" & year == 2014 ~ 11920,
-                                  division == "D1" & year == 2013 ~ 11180,
-                                  division == "D1" & year == 2012 ~ 10741,
+                                  division == "D2" & year == 2024 ~ 18264,
                                   division == "D2" & year == 2023 ~ 18102,
                                   division == "D2" & year == 2022 ~ 17841,
                                   division == "D2" & year == 2021 ~ 17541,
@@ -59,6 +57,7 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
                                   division == "D2" & year == 2018 ~ 15197,
                                   division == "D2" & year == 2017 ~ 13301,
                                   division == "D2" & year == 2016 ~ 12980,
+                                  division == "D3" & year == 2024 ~ 18265,
                                   division == "D3" & year == 2023 ~ 18103,
                                   division == "D3" & year == 2022 ~ 17842,
                                   division == "D3" & year == 2021 ~ 17542,
