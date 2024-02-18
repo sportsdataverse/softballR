@@ -35,7 +35,7 @@ ncaa_softball_playerbox <- function(game_id){
     upd[upd == ""] <- "0"
 
     upd <- upd %>%
-      dplyr::mutate(across(3:26, as.numeric)) %>%
+      dplyr::mutate(across(.cols = 3:76, .fns = \(col) as.numeric(str_remove(col, "/")))) %>%
       dplyr::mutate(game_id = game_id)
 
     return(upd)
@@ -70,7 +70,7 @@ ncaa_softball_playerbox <- function(game_id){
     upd[] <- lapply(upd, gsub, pattern="/", replacement="")
 
     upd <- upd %>%
-      dplyr::mutate(across(3:26, as.numeric)) %>%
+      dplyr::mutate(across(3:35, as.numeric)) %>%
       dplyr::filter(ip > 0) %>%
       dplyr::mutate(game_id = game_id)
 

@@ -79,7 +79,7 @@ ncaa_softball_scoreboard <- function(date, division = "D1"){
 
     game_vec <- raw[loc:(next_loc-1)]
 
-    if(any(grepl("Canceled", game_vec))) return(NULL)
+    if(any(grepl("Canceled|Ppd", game_vec))) return(NULL)
 
     game_id <- game_vec[grep("<tr id=\"", game_vec)[1]] %>%
       trimws() %>%
