@@ -2,7 +2,7 @@
 #'
 #' @author Tyson King
 #' @description 2021-2023 for D1, only 2023 for D2 and D3
-#' @param season 2021, 2022 or 2023
+#' @param season 2021, 2022 2023, or 2024
 #' @param division "D1", "D2", or "D3
 #'
 #' @return data frame of date, team names and their scores
@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' try(ncaa_softball_teams(2023))
+#' try(ncaa_softball_teams(2024))
 ncaa_softball_teams <- function(season, division = "D1"){
 
   team_ids <- "https://stats.ncaa.org/game_upload/team_codes" %>%
@@ -21,7 +21,7 @@ ncaa_softball_teams <- function(season, division = "D1"){
     dplyr::filter(!(X1 %in% c("NCAA Codes", "ID"))) %>%
     `names<-`(c("team_id", "team_name"))
 
-  possible_seasons <- c(2021, 2022, 2023)
+  possible_seasons <- c(2021, 2022, 2023, 2024)
   possible_divisions <- c("D1", "D2", "D3")
 
   if(!(season %in% possible_seasons &
