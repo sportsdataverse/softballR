@@ -18,25 +18,30 @@ ncaa_softball_playerbox <- function(game_id){
 
   get_hitting_box <- function(id){
 
-    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
+    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/individual_stats") %>%
       rvest::read_html() %>%
       rvest::html_table()
 
-    first_team <- as.character(raw[[6]][1,1])
-    second_team <- as.character(raw[[7]][1,1])
+    first_team <- as.character(raw[[2]][2,1])
+    second_team <- as.character(raw[[2]][3,1])
+    date <- as.character(raw[[2]][4,1])
 
-    upd <- rbind(raw[[6]],raw[[7]]) %>%
-      `names<-`(raw[[6]][2,]) %>%
+    upd <- rbind(raw[[4]],raw[[5]]) %>%
       janitor::clean_names() %>%
+      dplyr::rename(player = name) %>% 
       dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
 
-    upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
+    upd$team <- ifelse(upd$player %in% raw[[4]]$Name, first_team, second_team)
     upd$opponent <- ifelse(upd$team == first_team, second_team, first_team)
     upd[upd == ""] <- "0"
-
+    
+    cols = c("player", "pos", "g", "rbi", "ab", "r", "h", "x2b", "x3b", "tb", "hr", "ibb", "bb", "hbp", "sf", "sh", "k", "dp", "sb", "cs", "picked", "team", "opponent", "game_id", "game_date", "season")    
+    
     upd <- upd %>%
-      dplyr::mutate(across(.cols = 3:76, .fns = \(col) as.numeric(str_remove(col, "/")))) %>%
-      dplyr::mutate(game_id = game_id)
+      dplyr::rename(pos = p) %>% 
+      dplyr::mutate(g = 1, game_date = date, season = 2024, game_id = game_id) %>% 
+      dplyr::select(cols) %>% 
+      dplyr::mutate(across(.cols = 3:20, .fns = \(col) as.numeric(str_remove(col, "/"))))
 
     return(upd)
 
@@ -44,35 +49,31 @@ ncaa_softball_playerbox <- function(game_id){
 
   get_pitching_box <- function(id){
 
-    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
-      readLines()
-
-    pitching_url <- raw[grep("Pitching", raw)] %>% 
-      trimws() %>% 
-      stringr::str_remove_all("\\<a href=\"|\"\\>Pitching\\</a\\>  &nbsp;\\|") %>% 
-      paste0("https://stats.ncaa.org/", .)
-
-    raw <- pitching_url %>%
+    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/individual_stats") %>%
       rvest::read_html() %>%
       rvest::html_table()
-
-    first_team <- as.character(raw[[6]][1,1])
-    second_team <- as.character(raw[[7]][1,1])
-
+    
+    first_team <- as.character(raw[[2]][2,1])
+    second_team <- as.character(raw[[2]][3,1])
+    date <- as.character(raw[[2]][4,1])
+    
     upd <- rbind(raw[[6]],raw[[7]]) %>%
-      `names<-`(raw[[6]][2,]) %>%
       janitor::clean_names() %>%
+      dplyr::rename(player = name) %>% 
       dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
-
-    upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
+    
+    upd$team <- ifelse(upd$player %in% raw[[6]]$Name, first_team, second_team)
     upd$opponent <- ifelse(upd$team == first_team, second_team, first_team)
     upd[upd == ""] <- "0"
     upd[] <- lapply(upd, gsub, pattern="/", replacement="")
+    
+    cols = c("game_id", "team", "opponent", "player", "ip", "ha", "er", "bb", "hb", "so", "bf", "hr_a", "season")
 
     upd <- upd %>%
-      dplyr::mutate(across(3:35, as.numeric)) %>%
-      dplyr::filter(ip > 0) %>%
-      dplyr::mutate(game_id = game_id)
+      dplyr::mutate(game_id = game_id, season = 2024) %>% 
+      dplyr::select(cols) %>% 
+      dplyr::mutate(across(5:12, as.numeric)) %>%
+      dplyr::filter(ip > 0)
 
     return(upd)
 
@@ -80,33 +81,27 @@ ncaa_softball_playerbox <- function(game_id){
 
   get_fielding_box <- function(id){
 
-    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/box_score") %>%
-      readLines()
-
-    fielding_url <- raw[grep("Fielding", raw)] %>% 
-      trimws() %>% 
-      stringr::str_remove_all("\\<a href=\"|\"\\>Fielding\\</a\\>") %>% 
-      paste0("https://stats.ncaa.org/", .)
-
-    raw <- fielding_url %>% 
+    raw <- glue::glue("https://stats.ncaa.org/contests/{id}/individual_stats") %>%
       rvest::read_html() %>%
       rvest::html_table()
-
-    first_team <- as.character(raw[[6]][1,1])
-    second_team <- as.character(raw[[7]][1,1])
-
-    upd <- rbind(raw[[6]],raw[[7]]) %>%
-      `names<-`(raw[[6]][2,]) %>%
+    
+    first_team <- as.character(raw[[2]][2,1])
+    second_team <- as.character(raw[[2]][3,1])
+    date <- as.character(raw[[2]][4,1])
+    
+    upd <- rbind(raw[[8]],raw[[9]]) %>%
       janitor::clean_names() %>%
+      dplyr::rename(player = name) %>% 
       dplyr::filter(!(player %in% c(first_team, second_team,"Player","Totals")))
-
-    upd$team <- ifelse(upd$player %in% raw[[6]]$X1, first_team, second_team)
+    
+    upd$team <- ifelse(upd$player %in% raw[[8]]$Name, first_team, second_team)
     upd$opponent <- ifelse(upd$team == first_team, second_team, first_team)
     upd[upd == ""] <- "0"
-    upd[] <- lapply(upd, gsub, pattern="/", replacement="")
 
     upd <- upd %>%
-      dplyr::mutate(across(3:11, as.numeric)) %>%
+      dplyr::select(-number) %>% 
+      dplyr::rename(pos = p) %>% 
+      dplyr::mutate(across(3:12, as.numeric)) %>%
       dplyr::mutate(game_id = game_id)
 
     return(upd)
