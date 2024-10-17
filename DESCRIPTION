@@ -25,4 +25,5 @@ Imports:
   stringr,
   lubridate,
   rvest,
-  glue
+  glue,
+  anytime

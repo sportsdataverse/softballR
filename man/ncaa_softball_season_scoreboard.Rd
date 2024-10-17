@@ -18,6 +18,6 @@ data frame of date, team names and their scores
 Provides the score and some other info for all D1, D2, and D3 games from 2016-2023 (for now)
 }
 \examples{
-season = "2023"
+season = "2024"
 try(ncaa_softball_season_scoreboard(season))
 }

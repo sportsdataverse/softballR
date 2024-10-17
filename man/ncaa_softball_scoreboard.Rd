@@ -15,7 +15,7 @@ ncaa_softball_scoreboard(date, division = "D1")
 data frame of date, team names and their scores
 }
 \description{
-Supports 2017-2023 for D1 and only 2023 for D2 and D3
+Supports 2017-2024 for D1 and only 2023 for D2 and D3
 }
 \examples{
 date = "2022-03-05"
