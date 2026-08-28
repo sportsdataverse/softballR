@@ -24,9 +24,23 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage
 
-SRC = pathlib.Path("C:/Users/saiem/Documents/GitHub-Data/sdv-dev"
-                   "/softballR-dev/softballR/logo.png")
-OUT = pathlib.Path(__file__).parent
+HERE = pathlib.Path(__file__).resolve().parent
+REPO = HERE.parent
+# The DESIGNER'S ORIGINAL, committed alongside this script. It cannot be the
+# repo-root logo.png, which is this script's own OUTPUT: reading the rebuilt
+# logo back in makes the whole image one connected component, so the frame
+# labelling below selects everything, clears it, and the content bbox comes
+# back empty. The original has 13 components and 23,972 px of artwork outside
+# the frame; the rebuild has 1 and none. Keeping the source separate is what
+# makes this script re-runnable at all.
+SRC = HERE / "logo-source.png"
+OUT = HERE                      # scratch: hex.svg, content.png, _frame_*.png
+#: Where a rendered scale actually belongs. README.md consumes the repo-root
+#: logo.png; pkgdown and the Rd files read man/figures.
+DESTS = {
+    1: (REPO / "logo.png", REPO / "man" / "figures" / "logo.png"),
+    2: (REPO / "man" / "figures" / "logo-2x.png",),
+}
 ORANGE = "#ECAB55"
 W, H, CX, CY = 518, 600, 259, 300
 # Two FILLED hexagons, not one stroked path: a stroke sits half outside the
@@ -94,10 +108,11 @@ def compose(scale):
     tw, th = int(art.width * scale), int(art.height * scale)
     art = art.resize((tw, th), Image.LANCZOS)
     frame.alpha_composite(art, (int(66 * scale), int(193 * scale)))
-    out = OUT / (f"logo.png" if scale == 1 else f"logo-{scale}x.png")
-    frame.save(out)
+    for out in DESTS[scale]:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        frame.save(out)
+        print(f"wrote {out.relative_to(REPO).as_posix()} {frame.size}")
     os.remove(png)
-    print(f"wrote {out.name} {frame.size}")
     return frame
 
 
@@ -105,6 +120,13 @@ if __name__ == "__main__":
     (OUT / "hex.svg").write_text(hex_svg(), encoding="utf-8")
     content = content_rgba()
     ys, xs = np.where(np.asarray(content)[:, :, 3] > 20)
+    if len(xs) == 0:
+        raise SystemExit(
+            f"{SRC.name}: removing the largest alpha component left no pixels. "
+            "That means the frame and the artwork are one connected component "
+            "-- which is true of this script's OWN output, so SRC is probably "
+            "pointing at a rebuilt logo instead of the designer's original."
+        )
     box = (xs.min(), ys.min(), xs.max() + 1, ys.max() + 1)
     content.crop(box).save(OUT / "content.png")
     print(f"content bbox {box} -> {box[2]-box[0]}x{box[3]-box[1]}")
