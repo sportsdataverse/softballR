@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="518" height="600"
+     viewBox="0 0 518 600">
+  <!--
+    softballR hex frame. Pointy-top regular hexagon drawn as two filled
+    polygons: outer in the brand orange, inner in white, inset by the
+    inradius so the visible border is exactly 9.0px, matching the rest of
+    the SportsDataverse hexes. The previous logo's left and right vertices
+    were clipped flat by the artboard; these stay on canvas.
+  -->
+  <polygon points="259.00,3.00 1.79,151.50 1.79,448.50 259.00,597.00 516.21,448.50 516.21,151.50" fill="#ECAB55"/>
+  <polygon points="259.00,13.39 10.79,156.70 10.79,443.30 259.00,586.61 507.21,443.30 507.21,156.70" fill="#FFFFFF"/>
+</svg>

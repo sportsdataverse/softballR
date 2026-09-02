@@ -5,3 +5,7 @@
 .Rdata
 .httr-oauth
 .DS_Store
+
+# rebuild_logo.py intermediates (regenerated from data-raw/logo-source.png)
+data-raw/content.png
+data-raw/_frame_*.png
