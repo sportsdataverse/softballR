@@ -41,6 +41,29 @@ pbp <- softballR::ncaa_softball_season_pbp(team_id)
 ```
 
 
+## Citation
+
+To cite the `softballR` R package in publications, use:
+
+``` bibtex
+@misc{king_softballR,
+  author = {Tyson King},
+  title = {softballR: Easily Accessible College Softball Data.},
+  url = {https://github.com/sportsdataverse/softballR},
+  year = {2023}
+}
+```
+
+`citation("softballR")` returns the same entry with the installed version.
+
+## The SportsDataverse
+
+`softballR` is part of the [SportsDataverse](https://sportsdataverse.org).
+Its sibling packages publish free printable one-page cheat sheets at
+**[sportsdataverse.org/cheatsheets](https://sportsdataverse.org/cheatsheets)** —
+there is no softballR sheet yet, but the same template is available if you
+would like one built.
+
 ## **Author**
 
 [Tyson King](https://twitter.com/tking0426)  
