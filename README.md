@@ -54,7 +54,7 @@ To cite the `softballR` R package in publications, use:
 }
 ```
 
-`citation("softballR")` returns the same entry with the installed version.
+`citation("softballR")` returns this entry with the installed version number attached.
 
 ## The SportsDataverse
 
