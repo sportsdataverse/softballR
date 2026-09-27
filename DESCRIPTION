@@ -25,5 +25,9 @@ Imports:
   lubridate,
   rvest,
   glue,
-  anytime
+  anytime,
+  utils
+Suggests:
+  testthat (>= 3.0.0)
+Config/testthat/edition: 3
 Config/roxygen2/version: 8.1.0

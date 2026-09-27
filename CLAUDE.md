@@ -8,11 +8,12 @@ SportsDataverse R ecosystem. Pre-built season data lives in the sibling
 
 ## Commands
 
-No test suite, `_pkgdown.yml`, NEWS.md, or CI workflows exist in this repo yet.
-Standard R-package dev commands (from repo root):
+No `_pkgdown.yml` or CI workflows exist in this repo yet; there is a testthat
+(edition 3) suite and a NEWS.md. Standard R-package dev commands (from repo root):
 
 ```r
-devtools::document()   # regenerate NAMESPACE + man/ from roxygen2 (RoxygenNote 7.2.3)
+devtools::document()   # regenerate NAMESPACE + man/ (roxygen2 8.1.0)
+devtools::test()       # set SOFTBALLR_LOAD_TESTS=1 to also run the live load_* test
 devtools::load_all()   # load package for interactive testing
 devtools::check()      # R CMD check
 devtools::install_github("tmking2002/softballR")   # install (README install path)
@@ -38,6 +39,9 @@ CRAN.
   `_pbp`, `_playerbox`, `_rosters`, `_team_info`; `load_espn_softball_scoreboard`;
   `load_naia_softball_pbp`, `_scoreboard`. Loaders are the fast path; scrapers
   are what the data repo's build scripts call to refresh those `.RDS` files.
+  `load_ncaa_softball_groups` / `_group_seasons` / `_group_aliases` /
+  `_team_group_seasons` read the `ncaa_softball_groups` sportsdataverse-data
+  release csvs (schema: sdv-reference-data CONTRACT.md) instead.
 - **Helpers** — `get_cur_season`, `espn_json`.
 
 Coverage is uneven and encoded in each loader's season guards (e.g. NCAA
@@ -61,8 +65,9 @@ checks in `R/load_*.R` before assuming a year is available.
 
 ## Gotchas
 
-- **No tests, no `_pkgdown.yml`, no CI** in this repo. Don't claim a pkgdown
-  site or a test gate exists; verify before adding workflow references.
+- **No `_pkgdown.yml`, no CI** in this repo. Don't claim a pkgdown site or CI
+  exists; verify before adding workflow references. Every test leads with
+  `skip_on_cran()`; live release reads are gated on `SOFTBALLR_LOAD_TESTS=1`.
 - **Loaders depend on `softballR-data` being current.** `load_*` reads whatever
   `.RDS` the data repo last committed; stale data there = stale loader output.
   Live scrapers (`ncaa_*`/`espn_*`/`naia_*`) bypass that and hit the source site.
