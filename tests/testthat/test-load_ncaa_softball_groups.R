@@ -53,6 +53,7 @@ test_that("group loaders build the release urls", {
 test_that("load_ncaa_softball_team_group_seasons rejects seasons before 1982", {
   skip_on_cran()
   expect_error(load_ncaa_softball_team_group_seasons(seasons = 1981))
+  expect_error(load_ncaa_softball_team_group_seasons(seasons = 2024.5))
 })
 
 test_that("load_ncaa_softball_team_group_seasons live: Texas and Oklahoma to the SEC in 2025", {
@@ -60,7 +61,7 @@ test_that("load_ncaa_softball_team_group_seasons live: Texas and Oklahoma to the
   skip_if_not(identical(Sys.getenv("SOFTBALLR_LOAD_TESTS"), "1"),
               "Set SOFTBALLR_LOAD_TESTS=1 to run live load_* tests")
   x <- load_ncaa_softball_team_group_seasons(seasons = 2024:2025)
-  if (nrow(x) == 0) skip("No rows returned from the release at test time")
+  expect_setequal(unique(x$season), c(2024L, 2025L))
 
   moved <- x[x$team_id %in% c("522", "703"), ]
   moved <- moved[order(moved$team_id, moved$season), ]
