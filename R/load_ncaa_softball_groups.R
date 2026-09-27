@@ -50,7 +50,8 @@
   if (!is.null(seasons) && !isTRUE(seasons)) {
     stopifnot(is.numeric(seasons),
               all(seasons >= 1982),
-              all(seasons <= as.integer(format(Sys.Date(), "%Y"))))
+              all(seasons <= as.integer(format(Sys.Date(), "%Y"))),
+              all(seasons == trunc(seasons)))
     file_stem <- paste0(file_stem, "_", seasons)
   }
   urls <- paste0(
