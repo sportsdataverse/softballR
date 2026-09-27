@@ -1,7 +1,6 @@
 #' Get all NAIA softball scores for a given day
 #'
 #' @author Tyson King
-#' @description
 #' @param date "YYYY-MM-DD"
 #'
 #' @return data frame of date, team names and their scores

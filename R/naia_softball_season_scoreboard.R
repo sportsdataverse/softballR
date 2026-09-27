@@ -1,6 +1,5 @@
 #' Get all NAIA softball scores for a given season
 #'
-#' @description
 #' @param season YYYY Only 2023 for now
 #'
 #' @return data frame of date, team names and their scores
