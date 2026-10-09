@@ -1,6 +1,9 @@
 #' Load NCAA PBP
 #'
-#' @description Only supports 2023 season for now
+#' @description Play-by-play for every game of an NCAA season. The
+#'   softballR-data release starts in 2021 (D1, D2 and D3); any season up to the
+#'   current calendar year is accepted and a season that has not been published
+#'   yet returns a `try-error` from the download.
 #' @param season YYYY
 #' @param division D1, D2, or D3
 #'
@@ -14,7 +17,7 @@ load_ncaa_softball_pbp <- function(season, division = "D1"){
 
   if(!is.numeric(season)) stop("Invalid Input")
 
-  if(min(season < 2021 | max(season > 2024))) stop("Invalid Season")
+  .check_softball_season(season, floor = 2021)
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid division")
 

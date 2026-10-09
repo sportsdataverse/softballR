@@ -15,7 +15,10 @@ load_ncaa_softball_pbp(season, division = "D1")
 dataframe of all play by play data for an NCAA season
 }
 \description{
-Only supports 2023 season for now
+Play-by-play for every game of an NCAA season. The
+softballR-data release starts in 2021 (D1, D2 and D3); any season up to the
+current calendar year is accepted and a season that has not been published
+yet returns a \code{try-error} from the download.
 }
 \examples{
 try(load_ncaa_softball_pbp(2024))

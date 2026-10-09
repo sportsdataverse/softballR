@@ -7,7 +7,8 @@
 ncaa_softball_rosters(season, division)
 }
 \arguments{
-\item{season}{2021-2023}
+\item{season}{2012 onward (every season with a stats.ncaa.org roster id, see
+\code{softballR:::.ncaa_softball_roster_ids})}
 
 \item{division}{"D1", "D2", or "D3}
 }

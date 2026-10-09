@@ -17,7 +17,10 @@ load_ncaa_softball_playerbox(season = 2024, category, division = "D1")
 dataframe of all box scores from NCAA website from selected season
 }
 \description{
-2021-2023 for D1 hitting and pitching, only 2023 for everything else
+Hitting: D1 from 2012, D2 and D3 from 2016. Pitching: D1 from
+2015, D2 and D3 from 2016. Fielding: D1 2023 only. Any season up to the
+current calendar year is accepted; one the release has not published yet
+fails at the download.
 }
 \examples{
 try(load_ncaa_softball_playerbox(2021:2024, category = "Hitting"))
