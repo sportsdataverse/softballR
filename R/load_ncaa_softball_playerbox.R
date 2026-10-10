@@ -1,6 +1,9 @@
 #' Load NCAA Player Box Scores
 #'
-#' @description 2021-2023 for D1 hitting and pitching, only 2023 for everything else
+#' @description Hitting: D1 from 2012, D2 and D3 from 2016. Pitching: D1 from
+#'   2015, D2 and D3 from 2016. Fielding: D1 2023 only. Any season up to the
+#'   current calendar year is accepted; one the release has not published yet
+#'   fails at the download.
 #' @param season YYYY can also use vector of years
 #' @param category Hitting, Pitching, or Fielding
 #' @param division D1, D2, or D3
@@ -13,14 +16,13 @@
 #' @examples try(load_ncaa_softball_playerbox(2021:2024, category = "Hitting"))
 load_ncaa_softball_playerbox <- function(season = 2024, category, division = "D1"){
 
-  if(!is.numeric(season)) return("Invalid Season")
-
   if(!(category %in% c("Hitting", "Pitching", "Fielding"))) return("Invalid Category")
 
   if(category == "Fielding" & (length(season) > 1 | season[1] != 2023)) return("Only includes 2023 data... for now")
 
-  if(min(season < 2016 | max(season > 2024)) & category == "Pitching") return("Invalid Season")
-  if(min(season < 2016 | max(season > 2024)) & category == "Hitting") return("Invalid Season")
+  # first season the softballR-data release ships per division and category
+  floor <- if (division == "D1") c(Hitting = 2012, Pitching = 2015, Fielding = 2023)[[category]] else 2016
+  .check_softball_season(season, floor = floor)
 
   if(!(division %in% c("D1", "D2", "D3"))) stop("Invalid Division")
 
