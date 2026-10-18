@@ -41,7 +41,11 @@ pbp <- softballR::ncaa_softball_season_pbp(team_id)
 ```
 
 
-## Star History
+## Follow the SportsDataverse (@SportsDataverse) on X and star this repo
+
+[![X Follow](https://img.shields.io/twitter/follow/SportsDataverse?color=blue&label=%40SportsDataverse&logo=x&style=for-the-badge)](https://x.com/SportsDataverse)
+
+[![GitHub stars](https://img.shields.io/github/stars/sportsdataverse/softballR.svg?color=eee&logo=github&style=for-the-badge&label=Star%20softballR&maxAge=2592000)](https://github.com/sportsdataverse/softballR)
 
 <a href="https://github.com/sportsdataverse/softballR/stargazers">
   <picture>
