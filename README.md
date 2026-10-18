@@ -41,6 +41,15 @@ pbp <- softballR::ncaa_softball_season_pbp(team_id)
 ```
 
 
+## Star History
+
+<a href="https://github.com/sportsdataverse/softballR/stargazers">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sportsdataverse/softballR/star-history/star-history-dark.svg">
+    <img alt="Star history of sportsdataverse/softballR" src="https://raw.githubusercontent.com/sportsdataverse/softballR/star-history/star-history.png" width="600">
+  </picture>
+</a>
+
 ## Citation
 
 To cite the `softballR` R package in publications, use:
