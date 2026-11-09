@@ -1,18 +1,37 @@
-# softballR <a href='https://github.com/tmking2002/softballR/'><img src="https://raw.githubusercontent.com/tmking2002/softballR/main/logo.png" align="right"  width="20%" min-width="100px"/></a>
+# **softballR** <a href='https://github.com/sportsdataverse/softballR/'><img src="https://raw.githubusercontent.com/sportsdataverse/softballR/main/logo.png" align="right"  width="20%" min-width="100px"/></a>
+
+<!-- badges: start -->
+[![R-universe](https://img.shields.io/badge/dynamic/json?style=for-the-badge&color=success&label=r-universe&prefix=v&query=%24.Version&url=https%3A%2F%2Fsportsdataverse.r-universe.dev%2Fapi%2Fpackages%2FsoftballR)](https://sportsdataverse.r-universe.dev/softballR)
+[![Version-Number](https://img.shields.io/github/r-package/v/sportsdataverse/softballR?label=softballR&logo=R&style=for-the-badge)](https://github.com/sportsdataverse/softballR/)
+[![Codecov](https://img.shields.io/codecov/c/github/sportsdataverse/softballR?logo=codecov&style=for-the-badge)](https://app.codecov.io/gh/sportsdataverse/softballR)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg?style=for-the-badge&logo=github)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://github.com/sportsdataverse/softballR/blob/main/LICENSE.md)
+[![Contributors](https://img.shields.io/github/contributors/sportsdataverse/softballR?style=for-the-badge)](https://github.com/sportsdataverse/softballR/graphs/contributors)
+[![GitHub stars](https://img.shields.io/github/stars/sportsdataverse/softballR?style=for-the-badge&logo=github)](https://github.com/sportsdataverse/softballR/stargazers)
+[![X Follow](https://img.shields.io/twitter/follow/SportsDataverse?color=blue&label=%40SportsDataverse&logo=x&style=for-the-badge)](https://x.com/SportsDataverse)
+<!-- badges: end -->
+
 <b>softballR</b> is an R package for acquiring NCAA softball data.
 
 The package has functions for obtaining game-by-game scores, box scores, (some) play-by-play, and some different rankings websites. 
 
-## Installation
+## **Installation**
 
-You can install the current version (1.4.0) of the package like this:
-      
-``` r
-# install.packages("devtools")
-devtools::install_github("tmking2002/softballR")
+You can install the latest build from [R-universe](https://sportsdataverse.r-universe.dev/softballR) with:
+
+```r
+install.packages("softballR", repos = c("https://sportsdataverse.r-universe.dev", getOption("repos")))
 ```
 
-## Important Functions 
+You can install the development version of [**`softballR`**](https://github.com/sportsdataverse/softballR/) from GitHub with:
+
+```r
+if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
+pak::pak("sportsdataverse/softballR")
+# or: remotes::install_github("sportsdataverse/softballR")
+```
+
+## **Quick start**
 
 ### Get scores for all games in a given season
 
@@ -33,15 +52,58 @@ pitching <- softballR::load_ncaa_softball_playerbox(season = 2023, category = "P
 ``` r
 # Use Oklahoma 2022 as example
 
-team_id <- softballR::ncaa_softball_teams(2022) %>%
-    dplyr::filter(team_name == "Oklahoma") %>%
+team_id <- softballR::ncaa_softball_teams(2022) |>
+    dplyr::filter(team_name == "Oklahoma") |>
     dplyr::pull(softball_id)
     
 pbp <- softballR::ncaa_softball_season_pbp(team_id)
 ```
 
+## **Documentation**
 
-## Follow the SportsDataverse (@SportsDataverse) on X and star this repo
+**`softballR`** has no pkgdown site yet. Every exported function has a help page; browse them in R with:
+
+```r
+help(package = "softballR")
+```
+
+Release notes are in [NEWS.md](https://github.com/sportsdataverse/softballR/blob/main/NEWS.md).
+
+## **Companion packages**
+
+- [**`sportyR`**](https://sportyR.sportsdataverse.org/) (`install.packages("sportyR")`) draws a regulation NCAA softball field with [`sportyR::geom_softball("ncaa")`](https://sportyR.sportsdataverse.org/reference/geom_softball.html).
+- [**`sdvplotR`**](https://sdvplotR.sportsdataverse.org/) (`pak::pak("sportsdataverse/sdvplotR")`) draws the same field through [`sdv_surface("ncaa_softball")`](https://sdvplotR.sportsdataverse.org/reference/sdv_surface.html).
+- [**`sportsdataverse-py`**](https://py.sportsdataverse.org/) is the Python package; its `sportsdataverse.baseball.college_softball` module covers college softball.
+
+## **The SportsDataverse**
+
+[**`softballR`**](https://github.com/sportsdataverse/softballR) is part of the [SportsDataverse](https://sportsdataverse.org/), a set of
+open-source packages for sports data.
+
+| Package | Sport / Scope |
+|---|---|
+| [**cfbfastR**](https://cfbfastR.sportsdataverse.org/) | College football |
+| [**hoopR**](https://hoopR.sportsdataverse.org/) | Men's basketball (NBA and NCAA) |
+| [**wehoop**](https://wehoop.sportsdataverse.org/) | Women's basketball (WNBA and NCAA) |
+| [**fastRhockey**](https://fastRhockey.sportsdataverse.org/) | Hockey (NHL and PWHL) |
+| [**baseballr**](https://billpetti.github.io/baseballr/) | Baseball (MLB, MiLB, NCAA) |
+| [**softballR**](https://github.com/sportsdataverse/softballR) | College softball |
+| [**oddsapiR**](https://oddsapiR.sportsdataverse.org/) | Sports betting odds |
+| [**recruitR**](https://recruitR.sportsdataverse.org/) | College football recruiting |
+| [**usfootballR**](https://usfootballR.sportsdataverse.org/) | US soccer |
+| [**cfbseedR**](https://cfbseedR.sportsdataverse.org/) · [**cfb4th**](https://cfb4th.sportsdataverse.org/) | CFB playoff simulation · fourth-down decisions |
+| [**cfbplotR**](https://cfbplotR.sportsdataverse.org/) · [**sdvplotR**](https://sdvplotR.sportsdataverse.org/) · [**sportyR**](https://sportyR.sportsdataverse.org/) | Logos, colors, tables · playing surfaces |
+| [**sportsdataverse-R**](https://r.sportsdataverse.org/) | Umbrella R metapackage |
+| [**sportsdataverse-py**](https://py.sportsdataverse.org/) · [**sportsdataverse.js**](https://js.sportsdataverse.org/) | Python and Node.js |
+
+See the full ecosystem at [sportsdataverse.org](https://sportsdataverse.org/).
+
+Its sibling packages publish free printable one-page cheat sheets at
+**[sportsdataverse.org/cheatsheets](https://sportsdataverse.org/cheatsheets)** —
+there is no softballR sheet yet, but the same template is available if you
+would like one built.
+
+## **Follow the [SportsDataverse](https://x.com/SportsDataverse) on X and star this repo**
 
 [![X Follow](https://img.shields.io/twitter/follow/SportsDataverse?color=blue&label=%40SportsDataverse&logo=x&style=for-the-badge)](https://x.com/SportsDataverse)
 
@@ -54,7 +116,13 @@ pbp <- softballR::ncaa_softball_season_pbp(team_id)
   </picture>
 </a>
 
-## Citation
+## **Our Authors**
+
+-   [Tyson King](https://x.com/tking0426)
+<a href="https://x.com/tking0426" target="blank"><img src="https://img.shields.io/twitter/follow/tking0426?color=blue&label=%40tking0426&logo=x&style=for-the-badge" alt="@tking0426" /></a>
+<a href="https://github.com/tmking2002" target="blank"><img src="https://img.shields.io/github/followers/tmking2002?color=eee&logo=Github&style=for-the-badge" alt="@tmking2002" /></a>
+
+## **Citations**
 
 To cite the `softballR` R package in publications, use:
 
@@ -63,22 +131,13 @@ To cite the `softballR` R package in publications, use:
   author = {Tyson King},
   title = {softballR: Easily Accessible College Softball Data.},
   url = {https://github.com/sportsdataverse/softballR},
+  note = {R package version 1.4.0},
   year = {2023}
 }
 ```
 
 `citation("softballR")` returns this entry with the installed version number attached.
 
-## The SportsDataverse
+## **License**
 
-`softballR` is part of the [SportsDataverse](https://sportsdataverse.org).
-Its sibling packages publish free printable one-page cheat sheets at
-**[sportsdataverse.org/cheatsheets](https://sportsdataverse.org/cheatsheets)** —
-there is no softballR sheet yet, but the same template is available if you
-would like one built.
-
-## **Author**
-
-[Tyson King](https://twitter.com/tking0426)  
-<a href="https://twitter.com/tking0426" target="blank"><img src="https://img.shields.io/twitter/follow/tking0426?color=blue&label=%40tking0426&logo=twitter&style=for-the-badge" alt="@tking0426" /></a>
-<a href="https://github.com/tmking2002" target="blank"><img src="https://img.shields.io/github/followers/tmking2002?color=eee&logo=Github&style=for-the-badge" alt="@tmking2002" /></a>
+[**`softballR`**](https://github.com/sportsdataverse/softballR) is released under the [MIT License](https://github.com/sportsdataverse/softballR/blob/main/LICENSE.md) (`MIT + file LICENSE`).
