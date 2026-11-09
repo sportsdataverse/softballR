@@ -1,4 +1,4 @@
-# **softballR** <a href='https://github.com/sportsdataverse/softballR/'><img src="https://raw.githubusercontent.com/sportsdataverse/softballR/main/logo.png" align="right"  width="20%" min-width="100px"/></a>
+# **softballR** <a href='https://github.com/sportsdataverse/softballR/'><img alt="softballR hex logo" src="https://raw.githubusercontent.com/sportsdataverse/softballR/main/logo.png" align="right"  width="20%" min-width="100px"/></a>
 
 <!-- badges: start -->
 [![R-universe](https://img.shields.io/badge/dynamic/json?style=for-the-badge&color=success&label=r-universe&prefix=v&query=%24.Version&url=https%3A%2F%2Fsportsdataverse.r-universe.dev%2Fapi%2Fpackages%2FsoftballR)](https://sportsdataverse.r-universe.dev/softballR)
@@ -7,7 +7,7 @@
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg?style=for-the-badge&logo=github)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://github.com/sportsdataverse/softballR/blob/main/LICENSE.md)
 [![Contributors](https://img.shields.io/github/contributors/sportsdataverse/softballR?style=for-the-badge)](https://github.com/sportsdataverse/softballR/graphs/contributors)
-[![GitHub stars](https://img.shields.io/github/stars/sportsdataverse/softballR?style=for-the-badge&logo=github)](https://github.com/sportsdataverse/softballR/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/sportsdataverse/softballR?style=for-the-badge&logo=github)](https://github.com/sportsdataverse/softballR)
 [![X Follow](https://img.shields.io/twitter/follow/SportsDataverse?color=blue&label=%40SportsDataverse&logo=x&style=for-the-badge)](https://x.com/SportsDataverse)
 <!-- badges: end -->
 
@@ -28,7 +28,9 @@ You can install the development version of [**`softballR`**](https://github.com/
 ```r
 if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
 pak::pak("sportsdataverse/softballR")
-# or: remotes::install_github("sportsdataverse/softballR")
+# or, with remotes:
+# if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+# remotes::install_github("sportsdataverse/softballR")
 ```
 
 ## **Quick start**
@@ -109,7 +111,7 @@ would like one built.
 
 [![GitHub stars](https://img.shields.io/github/stars/sportsdataverse/softballR.svg?color=eee&logo=github&style=for-the-badge&label=Star%20softballR&maxAge=2592000)](https://github.com/sportsdataverse/softballR)
 
-<a href="https://github.com/sportsdataverse/softballR/stargazers">
+<a href="https://github.com/sportsdataverse/softballR">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sportsdataverse/softballR/star-history/star-history-dark.svg">
     <img alt="Star history of sportsdataverse/softballR" src="https://raw.githubusercontent.com/sportsdataverse/softballR/star-history/star-history.png" width="600">
